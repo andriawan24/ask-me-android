@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/customSplashFragment">
+
+    <fragment
+        android:id="@+id/customSplashFragment"
+        android:name="com.andriawan.askme.features.splash.presenter.CustomSplashFragment"
+        android:label="CustomSplashFragment" >
+        <action
+            android:id="@+id/action_customSplashFragment_to_onBoardingFragment"
+            app:destination="@id/onBoardingFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/customSplashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="com.andriawan.askme.features.onboarding.presenter.OnBoardingFragment"
+        android:label="OnBoardingFragment" />
+</navigation>

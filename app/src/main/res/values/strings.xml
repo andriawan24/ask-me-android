@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Ask Me</string>
+    <string name="onBoarding_title">Ask Everything!</string>
+    <string name="onBoarding_description">Feeling shy to ask? This is the platform where you can ask everyone and being asked by everyone about everything related to the topic you chosen privately</string>
+    <string name="get_started_button">Get Started</string>
 </resources>
