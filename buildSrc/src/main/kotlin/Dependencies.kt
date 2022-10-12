@@ -4,8 +4,7 @@ object Versions {
     const val materialVersion = "1.6.1"
     const val constraintLayoutVersion = "2.1.4"
     const val navigationVersion = "2.5.2"
-    const val sdpVersion = "1.1.0"
-    const val sspVersion = "1.1.0"
+    const val dataStoreVersion = "1.0.0"
 
     // Testing
     const val jUnitVersion = "4.13.2"
@@ -18,12 +17,13 @@ object Dependencies {
     const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompatVersion}"
     const val material = "com.google.android.material:material:${Versions.materialVersion}"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayoutVersion}"
-    const val sdp = "com.intuit.sdp:sdp-android:${Versions.sdpVersion}"
-    const val ssp = "com.intuit.ssp:ssp-android:${Versions.sspVersion}"
 
     // Navigation Component
     const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${Versions.navigationVersion}"
     const val navigationUI = "androidx.navigation:navigation-ui-ktx:${Versions.navigationVersion}"
+
+    // Preferences Data Store
+    const val dataStore = "androidx.datastore:datastore-preferences:${Versions.dataStoreVersion}"
 
     // Testing
     const val jUnit = "junit:junit:${Versions.jUnitVersion}"

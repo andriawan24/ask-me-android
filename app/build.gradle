@@ -63,9 +63,8 @@ dependencies {
     implementation Dependencies.navigationFragment
     implementation Dependencies.navigationUI
 
-    // SDP & SSP
-    implementation Dependencies.sdp
-    implementation Dependencies.ssp
+    // Preferences Data Store
+    implementation Dependencies.dataStore
 
     // Testing
     testImplementation Dependencies.jUnit

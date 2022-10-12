@@ -3,6 +3,7 @@ package com.andriawan.askme.features.splash.presenter
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.andriawan.askme.base.BaseFragment
+import com.andriawan.askme.data.local.datastore.AskMeDataStore
 import com.andriawan.askme.databinding.FragmentSplashScreenBinding
 import com.andriawan.askme.features.splash.viewmodel.SplashScreenViewModel
 
@@ -14,11 +15,22 @@ class CustomSplashFragment : BaseFragment<FragmentSplashScreenBinding, SplashScr
     }
 
     override fun initViews() {
+        viewModel.initData(AskMeDataStore(requireContext()))
+
         viewModel.navigateOnBoarding.observe(this) {
             findNavController().navigate(
                 CustomSplashFragmentDirections
                     .actionCustomSplashFragmentToOnBoardingFragment()
             )
+        }
+
+        viewModel.navigateLoginPage.observe(this) {
+            it.getContentIfNotHandled()?.let {
+                findNavController().navigate(
+                    CustomSplashFragmentDirections
+                        .actionCustomSplashFragmentToLoginFragment()
+                )
+            }
         }
     }
 }
