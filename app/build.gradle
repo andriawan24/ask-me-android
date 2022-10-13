@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.dagger.hilt.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -26,6 +28,7 @@ android {
             applicationIdSuffix '.debug'
             versionNameSuffix '-DEBUG'
             resValue "string", "app_name", "Ask Me Debug"
+            buildConfigField "String", "BASE_URL", "\"https://ask-me.simba-upi.my.id\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
@@ -34,6 +37,7 @@ android {
             minifyEnabled true
             shrinkResources true
             resValue "string", "app_name", "Ask Me"
+            buildConfigField "String", "BASE_URL", "\"https://ask-me.simba-upi.my.id\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -65,6 +69,19 @@ dependencies {
 
     // Preferences Data Store
     implementation Dependencies.dataStore
+
+    // Retrofit
+    implementation Dependencies.retrofit
+    implementation Dependencies.retrofitGSONConverter
+
+    // OkHttp
+    implementation platform(Dependencies.okHttpBom)
+    implementation Dependencies.okHttpClient
+    implementation Dependencies.okHttpLoggingInterceptor
+
+    // Hilt Dagger
+    implementation Dependencies.hiltAndroid
+    kapt Dependencies.hiltCompiler
 
     // Testing
     testImplementation Dependencies.jUnit

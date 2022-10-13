@@ -18,15 +18,17 @@ import java.io.IOException
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = AskMeDataStore.PREFERENCE_NAME)
 
-class AskMeDataStore(
-    private val context: Context
-) {
+class AskMeDataStore(private val context: Context) {
+
     suspend fun getFirstTime(): Boolean = context.dataStore.data
         .catch { exception ->
             if (exception is IOException) {
                 emit(emptyPreferences())
             } else {
-                Log.e(AskMeDataStore::class.simpleName, "getFirstTime: ${exception.localizedMessage}")
+                Log.e(
+                    AskMeDataStore::class.simpleName,
+                    "getFirstTime: ${exception.localizedMessage}"
+                )
             }
         }
         .map { preferences ->

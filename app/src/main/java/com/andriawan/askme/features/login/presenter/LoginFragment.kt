@@ -5,20 +5,33 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
+import android.util.Patterns
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.text.buildSpannedString
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import com.andriawan.askme.R
 import com.andriawan.askme.base.BaseFragment
 import com.andriawan.askme.databinding.FragmentLoginBinding
 import com.andriawan.askme.features.login.viewmodel.LoginViewModel
+import com.andriawan.askme.utils.Constants.AlertType.SUCCESS
+import com.andriawan.askme.utils.Constants.MAXIMUM_PASSWORD_LENGTH
+import com.andriawan.askme.utils.Constants.MINIMUM_PASSWORD_LENGTH
 import com.andriawan.askme.utils.Constants.NEW_LINE
 import com.andriawan.askme.utils.Constants.ONE
 import com.andriawan.askme.utils.Constants.SPACE
 import com.andriawan.askme.utils.Constants.ZERO
+import com.andriawan.askme.utils.ResultState
+import com.andriawan.askme.utils.disabledWithText
+import com.andriawan.askme.utils.enableWithText
+import com.andriawan.askme.utils.setErrorText
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.scopes.FragmentScoped
+import java.util.regex.Pattern
 
+@AndroidEntryPoint
+@FragmentScoped
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     override val viewModel: LoginViewModel by viewModels()
@@ -28,15 +41,69 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
 
     override fun initViews() {
         binding.titleTextView.text = createWelcomeText()
+        binding.emailTextInput.addTextChangedListener {
+            if (it.isNullOrBlank()) {
+                binding.emailTextInputLayout.setErrorText(getString(R.string.empty_email))
+            } else if (!Pattern.matches(Patterns.EMAIL_ADDRESS.pattern(), it)) {
+                binding.emailTextInputLayout.setErrorText(getString(R.string.not_valid_email))
+            } else {
+                binding.emailTextInputLayout.isErrorEnabled = false
+            }
+        }
+        binding.passwordTextInput.addTextChangedListener {
+            if (it.isNullOrBlank()) {
+                binding.passwordTextInputLayout.setErrorText(getString(R.string.empty_password))
+                binding.passwordTextInputLayout.errorIconDrawable = null
+            } else if (it.length !in MINIMUM_PASSWORD_LENGTH..MAXIMUM_PASSWORD_LENGTH) {
+                binding.passwordTextInputLayout.setErrorText(getString(R.string.length_password))
+                binding.passwordTextInputLayout.errorIconDrawable = null
+            } else {
+                binding.passwordTextInputLayout.isErrorEnabled = false
+            }
+        }
         binding.signUpTextView.apply {
             text = createSignUpText()
             movementMethod = LinkMovementMethod.getInstance()
         }
         binding.signInButton.setOnClickListener {
-            showCustomSnackBar(
-                binding.root,
-                "Failed to login"
-            )
+            val email = binding.emailTextInput.text.toString()
+            val password = binding.passwordTextInput.text.toString()
+            viewModel.signIn(email, password)
+        }
+    }
+
+    override fun initObservers() {
+        viewModel.signInResult.observe(this) {
+            when (it) {
+                is ResultState.Loading -> {
+                    binding.signInButton.disabledWithText(R.string.loading)
+                }
+
+                is ResultState.Error -> {
+                    binding.signInButton.enableWithText(R.string.sign_in)
+                    showCustomSnackBar(
+                        binding.root,
+                        it.message
+                    )
+                }
+
+                is ResultState.Success -> {
+                    binding.signInButton.enableWithText(R.string.sign_in)
+                    showCustomSnackBar(
+                        binding.root,
+                        getString(R.string.login_successful),
+                        SUCCESS
+                    )
+                }
+
+                is ResultState.ErrorGeneric -> {
+                    binding.signInButton.enableWithText(R.string.sign_in)
+                    showCustomSnackBar(
+                        binding.root,
+                        getString(it.message)
+                    )
+                }
+            }
         }
     }
 

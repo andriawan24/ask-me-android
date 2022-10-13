@@ -5,6 +5,9 @@ object Versions {
     const val constraintLayoutVersion = "2.1.4"
     const val navigationVersion = "2.5.2"
     const val dataStoreVersion = "1.0.0"
+    const val retrofitVersion = "2.9.0"
+    const val okHttpVersion = "4.10.0"
+    const val hiltVersion = "2.44"
 
     // Testing
     const val jUnitVersion = "4.13.2"
@@ -24,6 +27,19 @@ object Dependencies {
 
     // Preferences Data Store
     const val dataStore = "androidx.datastore:datastore-preferences:${Versions.dataStoreVersion}"
+
+    // Okhttp
+    const val okHttpBom = "com.squareup.okhttp3:okhttp-bom:${Versions.okHttpVersion}"
+    const val okHttpClient = "com.squareup.okhttp3:okhttp"
+    const val okHttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor"
+
+    // Retrofit
+    const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofitVersion}"
+    const val retrofitGSONConverter = "com.squareup.retrofit2:converter-gson:${Versions.retrofitVersion}"
+
+    // Hilt Dagger
+    const val hiltAndroid = "com.google.dagger:hilt-android:${Versions.hiltVersion}"
+    const val hiltCompiler = "com.google.dagger:hilt-compiler:${Versions.hiltVersion}"
 
     // Testing
     const val jUnit = "junit:junit:${Versions.jUnitVersion}"

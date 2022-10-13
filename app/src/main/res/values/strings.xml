@@ -12,4 +12,13 @@
     <string name="sign_in">Sign In</string>
     <string name="sign_up_text">Do not have any account?</string>
     <string name="sign_up">Sign up</string>
+    <string name="empty_email">Please enter your email</string>
+    <string name="empty_password">Please enter your password</string>
+    <string name="length_password">Password length must be 8–12 characters</string>
+    <string name="not_valid_email">Email is not valid</string>
+    <string name="loading">Please wait…</string>
+    <string name="login_successful">You\'re logged in!</string>
+    <string name="login_failed">Failed to login</string>
+    <string name="no_internet">No Internet Connection</string>
+    <string name="failed_parse_json">Failed to parse JSON</string>
 </resources>

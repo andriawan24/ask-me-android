@@ -16,7 +16,9 @@ class CustomSplashFragment : BaseFragment<FragmentSplashScreenBinding, SplashScr
 
     override fun initViews() {
         viewModel.initData(AskMeDataStore(requireContext()))
+    }
 
+    override fun initObservers() {
         viewModel.navigateOnBoarding.observe(this) {
             findNavController().navigate(
                 CustomSplashFragmentDirections

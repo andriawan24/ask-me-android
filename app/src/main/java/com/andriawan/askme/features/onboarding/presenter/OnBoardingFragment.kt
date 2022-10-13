@@ -18,11 +18,12 @@ class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingVie
 
     override fun initViews() {
         val dataStore = AskMeDataStore(requireContext())
-
         binding.getStartedButton.setOnClickListener {
             viewModel.setFirstTime(dataStore)
         }
+    }
 
+    override fun initObservers() {
         viewModel.goToLoginPage.observe(this) {
             it.getContentIfNotHandled()?.let {
                 findNavController().navigate(
