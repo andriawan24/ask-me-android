@@ -8,4 +8,5 @@
     <color name="subtitle_text_color">#6A6A6A</color>
     <color name="button_color">#48A4DF</color>
     <color name="hint_text_color">#BABABA</color>
+    <color name="error_color">#591717</color>
 </resources>
