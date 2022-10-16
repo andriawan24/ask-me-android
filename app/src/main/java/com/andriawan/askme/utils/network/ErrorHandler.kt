@@ -7,9 +7,9 @@ import retrofit2.HttpException
 import java.io.IOException
 
 fun Exception.getErrorMessage(context: Context): String {
-    when (this) {
+    return when (this) {
         is IOException -> {
-            return context.getString(R.string.no_internet)
+            context.getString(R.string.no_internet)
         }
 
         is HttpException -> {
@@ -17,11 +17,11 @@ fun Exception.getErrorMessage(context: Context): String {
                 this.response()!!.errorBody()!!.charStream(),
                 BaseResponse::class.java
             )
-            return errorResponse.message
+            errorResponse.message
         }
 
         else -> {
-            return this.message.toString()
+            this.message.toString()
         }
     }
 }

@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andriawan.askme.data.dtos.LoginDTO
 import com.andriawan.askme.domain.usecases.auth.SignInUseCase
 import com.andriawan.askme.utils.ResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,8 +16,8 @@ class LoginViewModel @Inject constructor(
     private val signInUseCase: SignInUseCase
 ): ViewModel() {
 
-    private val _signInResult = MutableLiveData<ResultState<LoginDTO>>()
-    val signInResult: LiveData<ResultState<LoginDTO>> = _signInResult
+    private val _signInResult = MutableLiveData<ResultState<String?>>()
+    val signInResult: LiveData<ResultState<String?>> = _signInResult
 
     fun signIn(email: String, password: String) {
         val param = SignInUseCase.Param(email, password)
