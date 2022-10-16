@@ -4,13 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andriawan.askme.data.local.datastore.AskMeDataStore
+import com.andriawan.askme.domain.usecases.onboarding.GetFirstTimeUseCase
 import com.andriawan.askme.utils.None
+import com.andriawan.askme.utils.ResultState
 import com.andriawan.askme.utils.SingleEvents
+import com.andriawan.askme.utils.orFalse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SplashScreenViewModel: ViewModel() {
+@HiltViewModel
+class SplashScreenViewModel @Inject constructor(
+    private val getFirstTimeUseCase: GetFirstTimeUseCase
+): ViewModel() {
 
     private val _navigateOnBoarding = MutableLiveData<SingleEvents<None>>()
     val navigateOnBoarding: LiveData<SingleEvents<None>> = _navigateOnBoarding
@@ -18,13 +26,21 @@ class SplashScreenViewModel: ViewModel() {
     private val _navigateLoginPage = MutableLiveData<SingleEvents<None>>()
     val navigateLoginPage: LiveData<SingleEvents<None>> = _navigateLoginPage
 
-    fun initData(askMeDataStore: AskMeDataStore) {
+    fun initData() {
         viewModelScope.launch {
             delay(DEFAULT_SPLASH_SCREEN_DELAY)
-            if (askMeDataStore.getFirstTime()) {
-                _navigateOnBoarding.value = SingleEvents(None)
-            } else {
-                _navigateLoginPage.value = SingleEvents(None)
+            when (val firstTimeResponse = getFirstTimeUseCase.execute(None).first()) {
+                is ResultState.Success -> {
+                    if (!firstTimeResponse.data.orFalse()) {
+                        _navigateLoginPage.value = SingleEvents(None)
+                    } else {
+                        _navigateOnBoarding.value = SingleEvents(None)
+                    }
+                }
+
+                else -> {
+                    _navigateOnBoarding.value = SingleEvents(None)
+                }
             }
         }
     }

@@ -14,7 +14,7 @@
             android:id="@+id/title_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_30"
+            android:layout_marginTop="@dimen/dimen_32"
             style="@style/Title"
             android:layout_marginHorizontal="@dimen/dimen_24"
             android:text="@string/welcome_text" />

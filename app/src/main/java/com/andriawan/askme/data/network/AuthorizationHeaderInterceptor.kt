@@ -5,10 +5,8 @@ import com.andriawan.askme.utils.Constants.ACCESS_TOKEN_KEY
 import com.andriawan.askme.utils.Constants.AUTHORIZATION_HEADER
 import com.andriawan.askme.utils.Constants.BEARER_KEY
 import com.andriawan.askme.utils.SharedPreferencesHelper
-import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.Interceptor
 import okhttp3.Response
-import javax.inject.Inject
 
 class AuthorizationHeaderInterceptor(
     private val context: Context

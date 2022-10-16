@@ -25,6 +25,7 @@ import com.andriawan.askme.utils.Constants.ZERO
 import com.andriawan.askme.utils.ResultState
 import com.andriawan.askme.utils.disabledWithText
 import com.andriawan.askme.utils.enableWithText
+import com.andriawan.askme.utils.network.getErrorMessage
 import com.andriawan.askme.utils.setErrorText
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.scopes.FragmentScoped
@@ -83,7 +84,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                     binding.signInButton.enableWithText(R.string.sign_in)
                     showCustomSnackBar(
                         binding.root,
-                        it.message
+                        it.exception.getErrorMessage(requireContext())
                     )
                 }
 
@@ -93,14 +94,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                         binding.root,
                         getString(R.string.login_successful),
                         SUCCESS
-                    )
-                }
-
-                is ResultState.ErrorGeneric -> {
-                    binding.signInButton.enableWithText(R.string.sign_in)
-                    showCustomSnackBar(
-                        binding.root,
-                        getString(it.message)
                     )
                 }
             }
@@ -146,7 +139,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 override fun onClick(widget: View) {
                     showCustomSnackBar(
                         binding.root,
-                        "Failed to login"
+                        "Go to register page",
+                        SUCCESS
                     )
                 }
 

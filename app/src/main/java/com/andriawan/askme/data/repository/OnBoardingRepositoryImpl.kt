@@ -2,9 +2,9 @@ package com.andriawan.askme.data.repository
 
 import com.andriawan.askme.data.local.datastore.AskMeDataStore
 import com.andriawan.askme.domain.repository.OnBoardingRepository
-import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class OnBoardingRepositoryImpl(
+class OnBoardingRepositoryImpl @Inject constructor(
     private val dataStore: AskMeDataStore
 ): OnBoardingRepository {
 
@@ -12,15 +12,7 @@ class OnBoardingRepositoryImpl(
         return dataStore.getFirstTime()
     }
 
-    companion object {
-        @Volatile var INSTANCE: OnBoardingRepository? = null
-        fun getInstance(askMeDataStore: AskMeDataStore): OnBoardingRepository {
-            return INSTANCE ?: synchronized(this) {
-                val newInstance = OnBoardingRepositoryImpl(askMeDataStore).also {
-                    INSTANCE = it
-                }
-                newInstance
-            }
-        }
+    override suspend fun setFirstTime(isFirstTime: Boolean) {
+        dataStore.setFirstTime(isFirstTime)
     }
 }

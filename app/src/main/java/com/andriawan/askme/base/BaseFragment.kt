@@ -54,7 +54,23 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
         type: Constants.AlertType = Constants.AlertType.ERROR
     ) {
         val snackBar = Snackbar.make(container, EMPTY, Snackbar.LENGTH_SHORT)
-        val snackBarLayout = ViewCustomSnackbarBinding.inflate(layoutInflater).apply {
+        val snackBarLayout = getCustomSnackBarLayout(
+            type = type,
+            message = message,
+            onDismiss = { snackBar.dismiss() }
+        )
+        val snackBarView = snackBar.view as SnackbarLayout
+        snackBarView.setPadding(ZERO, ZERO, ZERO, ZERO)
+        snackBarView.addView(snackBarLayout.root, ZERO)
+        snackBar.show()
+    }
+
+    private fun getCustomSnackBarLayout(
+        type: Constants.AlertType,
+        message: String,
+        onDismiss: () -> Unit
+    ): ViewBinding {
+        return ViewCustomSnackbarBinding.inflate(layoutInflater).apply {
             when (type) {
                 Constants.AlertType.SUCCESS -> {
                     messageTextView.text = message
@@ -66,7 +82,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
                         )
                     )
                     backgroundMaterialCardView.setOnClickListener {
-                        snackBar.dismiss()
+                        onDismiss.invoke()
                     }
                 }
 
@@ -80,15 +96,10 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
                         )
                     )
                     backgroundMaterialCardView.setOnClickListener {
-                        snackBar.dismiss()
+                        onDismiss.invoke()
                     }
                 }
             }
         }
-
-        val snackBarView = snackBar.view as SnackbarLayout
-        snackBarView.setPadding(ZERO, ZERO, ZERO, ZERO)
-        snackBarView.addView(snackBarLayout.root, ZERO)
-        snackBar.show()
     }
 }

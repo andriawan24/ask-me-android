@@ -5,19 +5,36 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andriawan.askme.data.local.datastore.AskMeDataStore
+import com.andriawan.askme.domain.usecases.onboarding.SetFirstTimeUseCase
 import com.andriawan.askme.utils.None
+import com.andriawan.askme.utils.ResultState
 import com.andriawan.askme.utils.SingleEvents
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class OnBoardingViewModel: ViewModel() {
+@HiltViewModel
+class OnBoardingViewModel @Inject constructor(
+    private val setFirstTimeUseCase: SetFirstTimeUseCase
+): ViewModel() {
 
     private var _goToLoginPage = MutableLiveData<SingleEvents<None>>()
     val goToLoginPage: LiveData<SingleEvents<None>> = _goToLoginPage
 
-    fun setFirstTime(dataStore: AskMeDataStore) {
+    fun setFirstTime() {
         viewModelScope.launch {
-            dataStore.setFirstTime(false)
-            _goToLoginPage.value = SingleEvents(None)
+            setFirstTimeUseCase.execute(SetFirstTimeUseCase.Param(true)).collectLatest {
+                when (it) {
+                    is ResultState.Success -> {
+                        _goToLoginPage.value = SingleEvents(None)
+                    }
+
+                    else -> {
+                        _goToLoginPage.value = SingleEvents(None)
+                    }
+                }
+            }
         }
     }
 }

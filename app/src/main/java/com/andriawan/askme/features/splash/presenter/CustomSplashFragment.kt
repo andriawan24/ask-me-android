@@ -6,7 +6,11 @@ import com.andriawan.askme.base.BaseFragment
 import com.andriawan.askme.data.local.datastore.AskMeDataStore
 import com.andriawan.askme.databinding.FragmentSplashScreenBinding
 import com.andriawan.askme.features.splash.viewmodel.SplashScreenViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.scopes.FragmentScoped
 
+@AndroidEntryPoint
+@FragmentScoped
 class CustomSplashFragment : BaseFragment<FragmentSplashScreenBinding, SplashScreenViewModel>() {
 
     override val viewModel: SplashScreenViewModel by viewModels()
@@ -15,7 +19,7 @@ class CustomSplashFragment : BaseFragment<FragmentSplashScreenBinding, SplashScr
     }
 
     override fun initViews() {
-        viewModel.initData(AskMeDataStore(requireContext()))
+        viewModel.initData()
     }
 
     override fun initObservers() {
