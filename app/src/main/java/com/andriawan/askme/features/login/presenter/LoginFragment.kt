@@ -5,31 +5,31 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
-import android.util.Patterns
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.text.buildSpannedString
-import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.andriawan.askme.R
 import com.andriawan.askme.base.BaseFragment
 import com.andriawan.askme.databinding.FragmentLoginBinding
 import com.andriawan.askme.features.login.viewmodel.LoginViewModel
+import com.andriawan.askme.features.register.presenter.RegisterFragment.Companion.EXTRA_EMAIL
+import com.andriawan.askme.features.register.presenter.RegisterFragment.Companion.REGISTER_RESULT
 import com.andriawan.askme.utils.Constants.AlertType.SUCCESS
-import com.andriawan.askme.utils.Constants.MAXIMUM_PASSWORD_LENGTH
-import com.andriawan.askme.utils.Constants.MINIMUM_PASSWORD_LENGTH
 import com.andriawan.askme.utils.Constants.NEW_LINE
 import com.andriawan.askme.utils.Constants.ONE
 import com.andriawan.askme.utils.Constants.SPACE
 import com.andriawan.askme.utils.Constants.ZERO
 import com.andriawan.askme.utils.ResultState
-import com.andriawan.askme.utils.disabledWithText
-import com.andriawan.askme.utils.enableWithText
+import com.andriawan.askme.utils.extensions.disabledWithText
+import com.andriawan.askme.utils.extensions.enableWithText
+import com.andriawan.askme.utils.extensions.setErrorText
 import com.andriawan.askme.utils.network.getErrorMessage
-import com.andriawan.askme.utils.setErrorText
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.scopes.FragmentScoped
-import java.util.regex.Pattern
 
 @AndroidEntryPoint
 @FragmentScoped
@@ -41,35 +41,30 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     }
 
     override fun initViews() {
-        binding.titleTextView.text = createWelcomeText()
-        binding.emailTextInput.addTextChangedListener {
-            if (it.isNullOrBlank()) {
-                binding.emailTextInputLayout.setErrorText(getString(R.string.empty_email))
-            } else if (!Pattern.matches(Patterns.EMAIL_ADDRESS.pattern(), it)) {
-                binding.emailTextInputLayout.setErrorText(getString(R.string.not_valid_email))
-            } else {
-                binding.emailTextInputLayout.isErrorEnabled = false
+        with(binding) {
+            titleTextView.text = createWelcomeText()
+            emailTextInput.doAfterTextChanged {
+                emailTextInputLayout.setErrorText(viewModel.validateEmail(it))
             }
-        }
-        binding.passwordTextInput.addTextChangedListener {
-            if (it.isNullOrBlank()) {
-                binding.passwordTextInputLayout.setErrorText(getString(R.string.empty_password))
-                binding.passwordTextInputLayout.errorIconDrawable = null
-            } else if (it.length !in MINIMUM_PASSWORD_LENGTH..MAXIMUM_PASSWORD_LENGTH) {
-                binding.passwordTextInputLayout.setErrorText(getString(R.string.length_password))
-                binding.passwordTextInputLayout.errorIconDrawable = null
-            } else {
-                binding.passwordTextInputLayout.isErrorEnabled = false
+            passwordTextInput.doAfterTextChanged {
+                passwordTextInputLayout.setErrorText(viewModel.validatePassword(it))
+                passwordTextInputLayout.errorIconDrawable = null
             }
-        }
-        binding.signUpTextView.apply {
-            text = createSignUpText()
-            movementMethod = LinkMovementMethod.getInstance()
-        }
-        binding.signInButton.setOnClickListener {
-            val email = binding.emailTextInput.text.toString()
-            val password = binding.passwordTextInput.text.toString()
-            viewModel.signIn(email, password)
+            signUpTextView.apply {
+                text = createSignUpText()
+                movementMethod = LinkMovementMethod.getInstance()
+            }
+            signInButton.setOnClickListener {
+                val email = emailTextInput.text.toString()
+                val password = passwordTextInput.text.toString()
+                viewModel.signIn(email, password)
+            }
+
+            setFragmentResultListener(REGISTER_RESULT) { _, bundle ->
+                if (bundle.getString(EXTRA_EMAIL).isNullOrBlank().not()) {
+                    binding.emailTextInput.setText(bundle.getString(EXTRA_EMAIL))
+                }
+            }
         }
     }
 
@@ -137,10 +132,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         setSpan(
             object : ClickableSpan() {
                 override fun onClick(widget: View) {
-                    showCustomSnackBar(
-                        binding.root,
-                        "Go to register page",
-                        SUCCESS
+                    findNavController().navigate(
+                        LoginFragmentDirections
+                            .actionLoginFragmentToRegisterFragment()
                     )
                 }
 

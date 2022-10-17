@@ -18,6 +18,7 @@ object Constants {
 
     // API Services
     const val SIGN_IN_SERVICE = "/v1/api/auth/sign-in"
+    const val SIGN_UP_SERVICE = "/v1/api/auth/sign-up"
     const val GET_CREDENTIAL_SERVICE = "/v1/api/auth/me"
 
     // Alert Types

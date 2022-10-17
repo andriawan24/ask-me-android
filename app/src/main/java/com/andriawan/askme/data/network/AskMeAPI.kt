@@ -2,9 +2,11 @@ package com.andriawan.askme.data.network
 
 import com.andriawan.askme.data.dtos.LoginDTO
 import com.andriawan.askme.data.dtos.PostLoginBody
+import com.andriawan.askme.data.dtos.PostRegisterBody
 import com.andriawan.askme.data.dtos.UserDTO
 import com.andriawan.askme.utils.Constants.GET_CREDENTIAL_SERVICE
 import com.andriawan.askme.utils.Constants.SIGN_IN_SERVICE
+import com.andriawan.askme.utils.Constants.SIGN_UP_SERVICE
 import com.andriawan.askme.utils.network.BaseResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -17,4 +19,7 @@ interface AskMeAPI {
 
     @GET(GET_CREDENTIAL_SERVICE)
     suspend fun getCredential(): BaseResponse<UserDTO>
+
+    @POST(SIGN_UP_SERVICE)
+    suspend fun signUp(@Body postRegisterBody: PostRegisterBody): BaseResponse<UserDTO>
 }

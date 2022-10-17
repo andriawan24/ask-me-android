@@ -1,6 +1,7 @@
 package com.andriawan.askme.data.repository
 
 import com.andriawan.askme.data.dtos.PostLoginBody
+import com.andriawan.askme.data.dtos.PostRegisterBody
 import com.andriawan.askme.data.dtos.toModel
 import com.andriawan.askme.data.network.AskMeAPI
 import com.andriawan.askme.domain.models.UserModel
@@ -18,6 +19,11 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun getCredentials(): UserModel? {
         val credentialResponse = api.getCredential()
+        return credentialResponse.data?.toModel()
+    }
+
+    override suspend fun signUp(postRegisterBody: PostRegisterBody): UserModel? {
+        val credentialResponse = api.signUp(postRegisterBody)
         return credentialResponse.data?.toModel()
     }
 }

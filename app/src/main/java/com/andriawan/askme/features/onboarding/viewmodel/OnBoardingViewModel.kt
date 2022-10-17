@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andriawan.askme.data.local.datastore.AskMeDataStore
 import com.andriawan.askme.domain.usecases.onboarding.SetFirstTimeUseCase
 import com.andriawan.askme.utils.None
 import com.andriawan.askme.utils.ResultState
