@@ -5,21 +5,21 @@ import android.content.SharedPreferences
 import com.andriawan.askme.BuildConfig
 import com.andriawan.askme.utils.Constants.EMPTY
 
-object SharedPreferencesHelper {
+class SharedPreferencesHelper(private val context: Context) {
 
-    private fun getSharedPreferences(context: Context): SharedPreferences =
+    private fun getSharedPreferences(): SharedPreferences =
         context.getSharedPreferences(
             "${BuildConfig.APPLICATION_ID}_preferences",
             Context.MODE_PRIVATE
         )
 
-    fun saveString(context: Context, key: String, value: String) {
-        val prefs = getSharedPreferences(context)
+    fun saveString(key: String, value: String) {
+        val prefs = getSharedPreferences()
         prefs.edit().putString(key, value).apply()
     }
 
-    fun getString(context: Context, key: String, defaultValue: String = EMPTY): String {
-        val prefs = getSharedPreferences(context)
+    fun getString(key: String, defaultValue: String = EMPTY): String {
+        val prefs = getSharedPreferences()
         return prefs.getString(key, defaultValue).orEmpty()
     }
 }

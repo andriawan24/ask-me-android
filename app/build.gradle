@@ -83,6 +83,12 @@ dependencies {
     implementation Dependencies.hiltAndroid
     kapt Dependencies.hiltCompiler
 
+    // Shimmer
+    implementation Dependencies.shimmer
+
+    // Timber
+    implementation Dependencies.timber
+
     // Testing
     testImplementation Dependencies.jUnit
     androidTestImplementation Dependencies.extJUnit

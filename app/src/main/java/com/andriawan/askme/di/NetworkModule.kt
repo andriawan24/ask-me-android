@@ -5,6 +5,7 @@ import com.andriawan.askme.BuildConfig
 import com.andriawan.askme.data.network.AskMeAPI
 import com.andriawan.askme.data.network.AuthorizationHeaderInterceptor
 import com.andriawan.askme.utils.Constants.TIMEOUT_DEFAULT
+import com.andriawan.askme.utils.SharedPreferencesHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,12 +24,12 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun providesOkHttpClient(@ApplicationContext context: Context): OkHttpClient =
+    fun providesOkHttpClient(sharedPreferencesHelper: SharedPreferencesHelper): OkHttpClient =
         OkHttpClient.Builder()
             .connectTimeout(TIMEOUT_DEFAULT, TimeUnit.SECONDS)
             .readTimeout(TIMEOUT_DEFAULT, TimeUnit.SECONDS)
             .writeTimeout(TIMEOUT_DEFAULT, TimeUnit.SECONDS)
-            .addInterceptor(AuthorizationHeaderInterceptor(context))
+            .addInterceptor(AuthorizationHeaderInterceptor(sharedPreferencesHelper))
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
 

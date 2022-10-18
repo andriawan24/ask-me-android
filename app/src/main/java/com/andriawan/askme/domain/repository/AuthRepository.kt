@@ -8,4 +8,5 @@ interface AuthRepository {
     suspend fun signIn(postLoginBody: PostLoginBody): String?
     suspend fun getCredentials(): UserModel?
     suspend fun signUp(postRegisterBody: PostRegisterBody): UserModel?
+    suspend fun saveCredentials(userModel: UserModel?)
 }

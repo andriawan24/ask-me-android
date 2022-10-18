@@ -5,9 +5,11 @@
     <color name="background_color">#F3FBFF</color>
     <color name="primary_color">#48A4DF</color>
     <color name="primary_text_color">#3C4856</color>
+    <color name="black_color">#3C4856</color>
     <color name="subtitle_text_color">#6A6A6A</color>
     <color name="button_color">#48A4DF</color>
     <color name="hint_text_color">#BABABA</color>
     <color name="error_color">#591717</color>
     <color name="success_color">#0A3F13</color>
+    <color name="divider_color">#CACACA</color>
 </resources>

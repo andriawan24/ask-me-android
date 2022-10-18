@@ -7,8 +7,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andriawan.askme.R
+import com.andriawan.askme.domain.usecases.auth.GetCredentialUseCase
 import com.andriawan.askme.domain.usecases.auth.SignInUseCase
+import com.andriawan.askme.utils.Constants
+import com.andriawan.askme.utils.Constants.EMPTY
+import com.andriawan.askme.utils.None
 import com.andriawan.askme.utils.ResultState
+import com.andriawan.askme.utils.SharedPreferencesHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -17,11 +22,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val signInUseCase: SignInUseCase
+    private val signInUseCase: SignInUseCase,
+    sharedPreferencesHelper: SharedPreferencesHelper
 ) : ViewModel() {
 
     private val _signInResult = MutableLiveData<ResultState<String?>>()
     val signInResult: LiveData<ResultState<String?>> = _signInResult
+
+    init {
+        if (sharedPreferencesHelper.getString(Constants.ACCESS_TOKEN_KEY).isNotEmpty()) {
+            _signInResult.value = ResultState.Success(EMPTY)
+        }
+    }
 
     fun signIn(email: String, password: String) {
         val param = SignInUseCase.Param(email, password)

@@ -20,4 +20,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5" />
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@color/background_color"
+        app:itemIconTint="@color/primary_text_color"
+        app:itemTextColor="@color/primary_text_color"
+        app:menu="@menu/menu_navigation"
+        app:labelVisibilityMode="selected"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

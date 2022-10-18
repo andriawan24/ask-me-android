@@ -31,4 +31,16 @@
     <string name="failed_parse_json">Failed to parse JSON</string>
     <string name="app_title">Ask Me</string>
     <string name="name">Name</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="home_topic_title">What topic you’d like to ask today?</string>
+    <string name="card_topic">Card Topic</string>
+    <string name="popular_topics">Popular Topics</string>
+    <string name="morning_greetings">Good Morning</string>
+    <string name="afternoon_greetings">Good Afternoon</string>
+    <string name="evening_greetings">Good Evening</string>
+    <string name="night_greetings">Good Night</string>
+    <string name="greetings_template">%s, %s</string>
+    <string name="points_template">Points %d</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
 </resources>

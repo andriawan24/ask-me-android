@@ -8,7 +8,7 @@ import com.andriawan.askme.domain.usecases.onboarding.GetFirstTimeUseCase
 import com.andriawan.askme.utils.None
 import com.andriawan.askme.utils.ResultState
 import com.andriawan.askme.utils.SingleEvents
-import com.andriawan.askme.utils.orFalse
+import com.andriawan.askme.utils.extensions.orFalse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first

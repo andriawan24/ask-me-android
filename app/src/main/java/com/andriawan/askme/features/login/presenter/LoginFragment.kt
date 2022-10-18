@@ -69,28 +69,35 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
     }
 
     override fun initObservers() {
-        viewModel.signInResult.observe(this) {
-            when (it) {
-                is ResultState.Loading -> {
-                    binding.signInButton.disabledWithText(R.string.loading)
-                }
+        viewModel.signInResult.observe(this, this::signInResultObserver)
+    }
 
-                is ResultState.Error -> {
-                    binding.signInButton.enableWithText(R.string.sign_in)
-                    showCustomSnackBar(
-                        binding.root,
-                        it.exception.getErrorMessage(requireContext())
-                    )
-                }
+    private fun signInResultObserver(state: ResultState<String?>) {
+        when (state) {
+            is ResultState.Loading -> {
+                binding.signInButton.disabledWithText(R.string.loading)
+            }
 
-                is ResultState.Success -> {
-                    binding.signInButton.enableWithText(R.string.sign_in)
+            is ResultState.Error -> {
+                binding.signInButton.enableWithText(R.string.sign_in)
+                showCustomSnackBar(
+                    binding.root,
+                    state.exception.getErrorMessage(requireContext())
+                )
+            }
+
+            is ResultState.Success -> {
+                binding.signInButton.enableWithText(R.string.sign_in)
+                if (state.data.isNullOrBlank().not()) {
                     showCustomSnackBar(
                         binding.root,
                         getString(R.string.login_successful),
                         SUCCESS
                     )
                 }
+                findNavController().navigate(
+                    LoginFragmentDirections.actionLoginFragmentToHomeFragment()
+                )
             }
         }
     }

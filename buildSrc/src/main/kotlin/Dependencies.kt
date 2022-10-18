@@ -8,6 +8,8 @@ object Versions {
     const val retrofitVersion = "2.9.0"
     const val okHttpVersion = "4.10.0"
     const val hiltVersion = "2.44"
+    const val shimmerVersion = "0.5.0"
+    const val timberVersion = "5.0.1"
 
     // Testing
     const val jUnitVersion = "4.13.2"
@@ -40,6 +42,12 @@ object Dependencies {
     // Hilt Dagger
     const val hiltAndroid = "com.google.dagger:hilt-android:${Versions.hiltVersion}"
     const val hiltCompiler = "com.google.dagger:hilt-compiler:${Versions.hiltVersion}"
+
+    // Shimmer
+    const val shimmer = "com.facebook.shimmer:shimmer:${Versions.shimmerVersion}"
+
+    // Timber for logging
+    const val timber = "com.jakewharton.timber:timber:${Versions.timberVersion}"
 
     // Testing
     const val jUnit = "junit:junit:${Versions.jUnitVersion}"

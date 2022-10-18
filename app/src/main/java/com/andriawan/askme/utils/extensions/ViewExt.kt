@@ -1,5 +1,6 @@
 package com.andriawan.askme.utils.extensions
 
+import android.view.View
 import android.widget.Button
 import androidx.annotation.StringRes
 import com.google.android.material.textfield.TextInputLayout
@@ -26,4 +27,16 @@ fun Button.disabledWithText(@StringRes text: Int) {
 fun Button.enableWithText(@StringRes text: Int) {
     this.isEnabled = true
     this.text = this.context.getString(text)
+}
+
+fun View.setVisible() {
+    this.visibility = View.VISIBLE
+}
+
+fun View.setGone() {
+    this.visibility = View.GONE
+}
+
+fun View.setInvisible() {
+    this.visibility = View.INVISIBLE
 }
