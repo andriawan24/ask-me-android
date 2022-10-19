@@ -55,6 +55,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override fun initObservers() {
         viewModel.userModel.observe(this, this::observerUserModel)
         viewModel.topicsModel.observe(this, this::observerTopics)
+        viewModel.navigateToLogin.observe(this) {
+            it.getContentIfNotHandled()?.let {
+                findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToLoginFragment()
+                )
+            }
+        }
     }
 
     private fun observerTopics(state: ResultState<List<TopicModel>>) {
@@ -111,9 +118,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     }
 
     private fun unauthorizedRequest() {
-        findNavController().navigate(
-            HomeFragmentDirections.actionHomeFragmentToLoginFragment()
-        )
+        viewModel.onUnauthorizedRequest()
     }
 
     private fun hideHeaderLoading() = with(binding) {

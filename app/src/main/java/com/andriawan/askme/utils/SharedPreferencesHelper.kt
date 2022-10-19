@@ -22,4 +22,9 @@ class SharedPreferencesHelper(private val context: Context) {
         val prefs = getSharedPreferences()
         return prefs.getString(key, defaultValue).orEmpty()
     }
+
+    fun clearPreference(key: String) {
+        val prefs = getSharedPreferences()
+        prefs.edit().remove(key).apply()
+    }
 }

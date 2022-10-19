@@ -3,6 +3,7 @@ package com.andriawan.askme.di.usecases
 import com.andriawan.askme.domain.repository.AuthRepository
 import com.andriawan.askme.domain.usecases.auth.GetCredentialUseCase
 import com.andriawan.askme.domain.usecases.auth.SignInUseCase
+import com.andriawan.askme.domain.usecases.auth.SignOutUseCase
 import com.andriawan.askme.domain.usecases.auth.SignUpUseCase
 import com.andriawan.askme.utils.SharedPreferencesHelper
 import dagger.Module
@@ -33,4 +34,10 @@ object AuthUseCaseModule {
     fun providesGetCredentialUseCase(
         repository: AuthRepository
     ): GetCredentialUseCase = GetCredentialUseCase(repository)
+
+    @Provides
+    @ViewModelScoped
+    fun providesSignOutUseCase(
+        sharedPreferencesHelper: SharedPreferencesHelper
+    ): SignOutUseCase = SignOutUseCase(sharedPreferencesHelper)
 }
