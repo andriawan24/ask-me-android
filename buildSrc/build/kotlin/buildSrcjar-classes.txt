@@ -1,1 +1,0 @@
-C:\Users\fawaz\Documents\Projects\Android\AskMe\buildSrc\build\classes\kotlin\main\Dependencies.class;C:\Users\fawaz\Documents\Projects\Android\AskMe\buildSrc\build\classes\kotlin\main\Versions.class
