@@ -48,7 +48,7 @@ class AskMeDataStore(private val context: Context) {
                 if (exception is IOException) {
                     emit(emptyPreferences())
                 } else {
-                    Timber.e("getFirstTime: " + exception.localizedMessage)
+                    Timber.e("getUserModel: " + exception.localizedMessage)
                 }
             }.map { preferences ->
                 val userString = preferences[userModelKey]

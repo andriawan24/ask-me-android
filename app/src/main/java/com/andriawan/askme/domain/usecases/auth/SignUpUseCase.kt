@@ -1,6 +1,6 @@
 package com.andriawan.askme.domain.usecases.auth
 
-import com.andriawan.askme.data.dtos.PostRegisterBody
+import com.andriawan.askme.data.dtos.PostRegisterBodyDTO
 import com.andriawan.askme.domain.models.UserModel
 import com.andriawan.askme.domain.repository.AuthRepository
 import com.andriawan.askme.utils.FlowableUseCase
@@ -14,10 +14,9 @@ class SignUpUseCase(
 
     override fun execute(param: Param): Flow<ResultState<UserModel?>> = flow {
         emit(ResultState.Loading())
-
         try {
             val result = repository.signUp(
-                PostRegisterBody(
+                PostRegisterBodyDTO(
                     name = param.name,
                     email = param.email,
                     password = param.password

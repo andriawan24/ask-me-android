@@ -15,7 +15,7 @@ object DataStoreModule {
 
     @Provides
     @Singleton
-    fun providesDataSource(
+    fun providesDataStore(
         @ApplicationContext context: Context
     ): AskMeDataStore = AskMeDataStore(context)
 }

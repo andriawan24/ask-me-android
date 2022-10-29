@@ -1,7 +1,7 @@
 <resources>
-    <string name="onBoarding_title">Ask Everything!</string>
-    <string name="onBoarding_description">Feeling shy to ask? This is the platform where\nyou can ask everyone and being asked by\neveryone about everything related to the topic\nyou chosen privately</string>
-    <string name="get_started_button">Get Started</string>
+    <string name="on_boarding_title_text">Ask Everything!</string>
+    <string name="on_boarding_description_text">Feeling shy to ask? This is the platform where you can ask everyone and being asked by everyone about everything related to the topic\nyou chosen privately</string>
+    <string name="get_started_button_text">Get Started</string>
     <string name="welcome_text">Welcome Back to</string>
     <string name="welcome_subtitle">Have anything to ask today?</string>
     <string name="register_title">Let’s create your Ask Me account</string>
@@ -43,4 +43,5 @@
     <string name="points_template">Points %d</string>
     <string name="home">Home</string>
     <string name="profile">Profile</string>
+    <string name="content_description_image_logo">Image Application Logo</string>
 </resources>

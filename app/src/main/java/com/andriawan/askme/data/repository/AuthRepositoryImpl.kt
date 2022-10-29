@@ -1,7 +1,7 @@
 package com.andriawan.askme.data.repository
 
-import com.andriawan.askme.data.dtos.PostLoginBody
-import com.andriawan.askme.data.dtos.PostRegisterBody
+import com.andriawan.askme.data.dtos.PostLoginBodyDTO
+import com.andriawan.askme.data.dtos.PostRegisterBodyDTO
 import com.andriawan.askme.data.dtos.toModel
 import com.andriawan.askme.data.local.datastore.AskMeDataStore
 import com.andriawan.askme.data.network.AskMeAPI
@@ -14,7 +14,7 @@ class AuthRepositoryImpl @Inject constructor(
     private val dataStore: AskMeDataStore
 ) : AuthRepository {
 
-    override suspend fun signIn(postLoginBody: PostLoginBody): String? {
+    override suspend fun signIn(postLoginBody: PostLoginBodyDTO): String? {
         val response = api.signIn(postLoginBody)
         return response.data?.accessToken
     }
@@ -25,7 +25,7 @@ class AuthRepositoryImpl @Inject constructor(
         return credentialResponse.data?.toModel()
     }
 
-    override suspend fun signUp(postRegisterBody: PostRegisterBody): UserModel? {
+    override suspend fun signUp(postRegisterBody: PostRegisterBodyDTO): UserModel? {
         val credentialResponse = api.signUp(postRegisterBody)
         return credentialResponse.data?.toModel()
     }

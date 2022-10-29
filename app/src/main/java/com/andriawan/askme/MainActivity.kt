@@ -3,56 +3,41 @@ package com.andriawan.askme
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Text
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
+import com.andriawan.askme.navigation.AskMeNavigation
+import com.andriawan.askme.ui.themes.AskMeTheme
+import com.andriawan.askme.utils.Constants.DEFAULT_MARGIN
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
+@ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Column {
-                Text(text = "Hello World")
+            AskMeTheme {
+                val navController = rememberNavController()
+
+                Scaffold(
+                    content = {
+                        Surface(
+                            modifier = Modifier.padding(it),
+                            color = MaterialTheme.colorScheme.background
+                        ) {
+                            AskMeNavigation(navController = navController)
+                        }
+                    },
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.background)
+                        .padding(DEFAULT_MARGIN),
+                )
             }
         }
     }
-
-//    override fun initViews() {
-//        val navHostFragment =
-//            (supportFragmentManager.findFragmentById(R.id.navHost_fragmentContainer) as NavHostFragment)
-//        val navController = navHostFragment.navController
-//
-//        with(navController) {
-//            binding.bottomNavigation.apply {
-//                setupWithNavController(this@with)
-//                setOnItemSelectedListener {
-//                    when (it.itemId) {
-//                        R.id.homeFragment -> {
-//                            navigate(MainNavigationDirections.actionGlobalNavGraphHome())
-//                            return@setOnItemSelectedListener true
-//                        }
-//                        R.id.profileFragment -> {
-//                            navigate(MainNavigationDirections.actionGlobalNavGraphProfile())
-//                            return@setOnItemSelectedListener true
-//                        }
-//
-//                        else -> {
-//                            return@setOnItemSelectedListener false
-//                        }
-//                    }
-//                }
-//            }
-//
-//            addOnDestinationChangedListener { _, destination, _ ->
-//                binding.bottomNavigation.isVisible = mainVisibilityCheck(destination)
-//            }
-//        }
-//    }
-//
-//    private fun mainVisibilityCheck(destination: NavDestination): Boolean {
-//        return destination.id == R.id.homeFragment ||
-//                destination.id == R.id.profileFragment
-//    }
 }
