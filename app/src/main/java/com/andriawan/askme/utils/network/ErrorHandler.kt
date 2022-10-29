@@ -1,27 +1,29 @@
 package com.andriawan.askme.utils.network
 
-import android.content.Context
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import com.andriawan.askme.R
 import com.google.gson.Gson
 import retrofit2.HttpException
 import java.io.IOException
 
-fun Exception.getErrorMessage(context: Context): String {
-    return when (this) {
+@Composable
+fun getErrorMessage(exception: Exception): String {
+    return when (exception) {
         is IOException -> {
-            context.getString(R.string.no_internet)
+            stringResource(R.string.no_internet)
         }
 
         is HttpException -> {
             val errorResponse = Gson().fromJson(
-                this.response()!!.errorBody()!!.charStream(),
+                exception.response()!!.errorBody()!!.charStream(),
                 BaseResponse::class.java
             )
             errorResponse.message
         }
 
         else -> {
-            this.message.toString()
+            exception.message.toString()
         }
     }
 }

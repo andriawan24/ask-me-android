@@ -1,54 +1,58 @@
 package com.andriawan.askme
 
-import androidx.core.view.isVisible
-import androidx.navigation.NavDestination
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
-import com.andriawan.askme.base.BaseActivity
-import com.andriawan.askme.databinding.ActivityMainBinding
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Text
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<ActivityMainBinding>() {
+class MainActivity : ComponentActivity() {
 
-    override val binding: ActivityMainBinding by lazy {
-        ActivityMainBinding.inflate(layoutInflater)
-    }
-
-    override fun initViews() {
-        val navHostFragment =
-            (supportFragmentManager.findFragmentById(R.id.navHost_fragmentContainer) as NavHostFragment)
-        val navController = navHostFragment.navController
-
-        with(navController) {
-            binding.bottomNavigation.apply {
-                setupWithNavController(this@with)
-                setOnItemSelectedListener {
-                    when (it.itemId) {
-                        R.id.homeFragment -> {
-                            navigate(MainNavigationDirections.actionGlobalNavGraphHome())
-                            return@setOnItemSelectedListener true
-                        }
-                        R.id.profileFragment -> {
-                            navigate(MainNavigationDirections.actionGlobalNavGraphProfile())
-                            return@setOnItemSelectedListener true
-                        }
-
-                        else -> {
-                            return@setOnItemSelectedListener false
-                        }
-                    }
-                }
-            }
-
-            addOnDestinationChangedListener { _, destination, _ ->
-                binding.bottomNavigation.isVisible = mainVisibilityCheck(destination)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            Column {
+                Text(text = "Hello World")
             }
         }
     }
 
-    private fun mainVisibilityCheck(destination: NavDestination): Boolean {
-        return destination.id == R.id.homeFragment ||
-                destination.id == R.id.profileFragment
-    }
+//    override fun initViews() {
+//        val navHostFragment =
+//            (supportFragmentManager.findFragmentById(R.id.navHost_fragmentContainer) as NavHostFragment)
+//        val navController = navHostFragment.navController
+//
+//        with(navController) {
+//            binding.bottomNavigation.apply {
+//                setupWithNavController(this@with)
+//                setOnItemSelectedListener {
+//                    when (it.itemId) {
+//                        R.id.homeFragment -> {
+//                            navigate(MainNavigationDirections.actionGlobalNavGraphHome())
+//                            return@setOnItemSelectedListener true
+//                        }
+//                        R.id.profileFragment -> {
+//                            navigate(MainNavigationDirections.actionGlobalNavGraphProfile())
+//                            return@setOnItemSelectedListener true
+//                        }
+//
+//                        else -> {
+//                            return@setOnItemSelectedListener false
+//                        }
+//                    }
+//                }
+//            }
+//
+//            addOnDestinationChangedListener { _, destination, _ ->
+//                binding.bottomNavigation.isVisible = mainVisibilityCheck(destination)
+//            }
+//        }
+//    }
+//
+//    private fun mainVisibilityCheck(destination: NavDestination): Boolean {
+//        return destination.id == R.id.homeFragment ||
+//                destination.id == R.id.profileFragment
+//    }
 }
