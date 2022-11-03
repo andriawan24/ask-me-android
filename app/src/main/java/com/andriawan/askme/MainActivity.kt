@@ -32,10 +32,7 @@ class MainActivity : ComponentActivity() {
                         ) {
                             AskMeNavigation(navController = navController)
                         }
-                    },
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.background)
-                        .padding(DEFAULT_MARGIN),
+                    }
                 )
             }
         }

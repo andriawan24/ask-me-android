@@ -23,6 +23,7 @@ import com.andriawan.askme.R
 import com.andriawan.askme.navigation.AskMeDestinations
 import com.andriawan.askme.ui.screens.splash.viewmodel.SplashScreenViewModel
 import com.andriawan.askme.ui.themes.AskMeTheme
+import com.andriawan.askme.utils.Constants.EMPTY
 import com.andriawan.askme.utils.None
 import com.andriawan.askme.utils.SingleEvents
 
@@ -34,11 +35,23 @@ fun SplashScreen(
     viewLifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 ) {
     viewModel.navigateLoginPage.observe(viewLifecycleOwner) {
-        handleNavigationEvent(it, navController, AskMeDestinations.LOGIN_PAGE)
+        handleNavigationEvent(
+            event = it,
+            navController = navController,
+            destination = AskMeDestinations.LOGIN_PAGE,
+            popUpToRoute = AskMeDestinations.SPLASH_SCREEN_PAGE,
+            inclusive = true
+        )
     }
 
     viewModel.navigateOnBoarding.observe(viewLifecycleOwner) {
-        handleNavigationEvent(it, navController, AskMeDestinations.ON_BOARDING_PAGE)
+        handleNavigationEvent(
+            event = it,
+            navController = navController,
+            destination = AskMeDestinations.ON_BOARDING_PAGE,
+            popUpToRoute = AskMeDestinations.SPLASH_SCREEN_PAGE,
+            inclusive = true
+        )
     }
 
     SplashScreenContent(modifier = modifier)
@@ -47,10 +60,18 @@ fun SplashScreen(
 private fun handleNavigationEvent(
     event: SingleEvents<None>,
     navController: NavController,
-    page: String
+    destination: String,
+    popUpToRoute: String = EMPTY,
+    inclusive: Boolean = false,
+    launchSingleTop: Boolean = false
 ) {
     event.getContentIfNotHandled()?.let {
-        navController.navigate(page)
+        navController.navigate(destination) {
+            this.launchSingleTop = launchSingleTop
+            popUpTo(popUpToRoute) {
+                this.inclusive = inclusive
+            }
+        }
     }
 }
 

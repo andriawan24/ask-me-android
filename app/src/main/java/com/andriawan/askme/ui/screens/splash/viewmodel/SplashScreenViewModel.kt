@@ -31,10 +31,10 @@ class SplashScreenViewModel @Inject constructor(
             delay(DEFAULT_SPLASH_SCREEN_DELAY)
             when (val firstTimeResponse = getFirstTimeUseCase.execute(None).first()) {
                 is ResultState.Success -> {
-                    if (!firstTimeResponse.data.orFalse()) {
-                        _navigateLoginPage.value = SingleEvents(None)
-                    } else {
+                    if (firstTimeResponse.data.orFalse()) {
                         _navigateOnBoarding.value = SingleEvents(None)
+                    } else {
+                        _navigateLoginPage.value = SingleEvents(None)
                     }
                 }
 

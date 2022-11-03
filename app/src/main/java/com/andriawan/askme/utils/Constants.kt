@@ -12,6 +12,7 @@ object Constants {
     const val ONE = 1
     const val TWO = 2
     const val COMMA_WITH_SPACE = ", "
+    const val MINUS_ONE = -1
 
     const val MINIMUM_PASSWORD_LENGTH = 8
     const val MAXIMUM_PASSWORD_LENGTH = 14

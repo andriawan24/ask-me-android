@@ -1,15 +1,19 @@
 package com.andriawan.askme.navigation
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.andriawan.askme.ui.screens.login.presenter.LoginScreen
+import com.andriawan.askme.ui.screens.login.viewmodel.LoginViewModel
 import com.andriawan.askme.ui.screens.onboarding.presenter.OnBoardingScreen
 import com.andriawan.askme.ui.screens.onboarding.viewmodel.OnBoardingViewModel
 import com.andriawan.askme.ui.screens.splash.presenter.SplashScreen
 import com.andriawan.askme.ui.screens.splash.viewmodel.SplashScreenViewModel
 
+@ExperimentalMaterial3Api
 @Composable
 fun AskMeNavigation(
     navController: NavHostController,
@@ -25,7 +29,11 @@ fun AskMeNavigation(
         }
         composable(AskMeDestinations.ON_BOARDING_PAGE) {
             val viewModel: OnBoardingViewModel = hiltViewModel()
-            OnBoardingScreen(viewModel = viewModel)
+            OnBoardingScreen(viewModel = viewModel, navController = navController)
+        }
+        composable(AskMeDestinations.LOGIN_PAGE) {
+            val viewModel: LoginViewModel = hiltViewModel()
+            LoginScreen(viewModel = viewModel, navController = navController)
         }
     }
 }

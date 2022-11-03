@@ -22,9 +22,9 @@ class OnBoardingViewModel @Inject constructor(
     private var _goToLoginPage = MutableLiveData<SingleEvents<None>>()
     val goToLoginPage: LiveData<SingleEvents<None>> = _goToLoginPage
 
-    fun setFirstTimeToFalse() {
+    private fun setFirstTimeToFalse() {
         viewModelScope.launch {
-            setFirstTimeUseCase.execute(SetFirstTimeUseCase.Param(true)).collectLatest {
+            setFirstTimeUseCase.execute(SetFirstTimeUseCase.Param(false)).collectLatest {
                 if (it is ResultState.Success) {
                     _goToLoginPage.value = SingleEvents(None)
                 } else {

@@ -3,33 +3,41 @@ package com.andriawan.askme.ui.screens.onboarding.presenter
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.NavController
 import com.andriawan.askme.R
+import com.andriawan.askme.navigation.AskMeDestinations
+import com.andriawan.askme.ui.components.CustomButton
 import com.andriawan.askme.ui.screens.onboarding.models.OnBoardingUiEvent
 import com.andriawan.askme.ui.screens.onboarding.viewmodel.OnBoardingViewModel
 import com.andriawan.askme.ui.themes.AskMeTheme
-import com.andriawan.askme.ui.themes.OnPrimaryColorLight
-import timber.log.Timber
 
 @Composable
 fun OnBoardingScreen(
     viewModel: OnBoardingViewModel,
-    viewLifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
+    viewLifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+    navController: NavController
 ) {
     viewModel.goToLoginPage.observe(viewLifecycleOwner) {
         it.getContentIfNotHandled()?.let {
-            Timber.d("Navigate to login page")
+            navController.navigate(AskMeDestinations.LOGIN_PAGE) {
+                launchSingleTop = true
+                popUpTo(AskMeDestinations.SPLASH_SCREEN_PAGE) {
+                    inclusive = true
+                }
+            }
         }
     }
 
@@ -69,22 +77,11 @@ fun OnBoardingContent(onGetStartedClicked: () -> Unit) {
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(90.dp))
-        Button(
-            onClick = onGetStartedClicked,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 12.dp),
-            shape = MaterialTheme.shapes.small,
-            elevation = ButtonDefaults.buttonElevation(
-                defaultElevation = 2.dp
-            )
-        ) {
-            Text(
-                text = stringResource(id = R.string.get_started_button_text),
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                color = OnPrimaryColorLight
-            )
-        }
+        CustomButton(
+            onButtonClicked = onGetStartedClicked,
+            title = stringResource(id = R.string.get_started_button_text),
+            modifier = Modifier.padding(vertical = 8.dp, horizontal = 24.dp)
+        )
     }
 }
 

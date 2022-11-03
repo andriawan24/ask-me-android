@@ -4,6 +4,7 @@ import com.andriawan.askme.utils.Constants.ACCESS_TOKEN_KEY
 import com.andriawan.askme.utils.Constants.AUTHORIZATION_HEADER
 import com.andriawan.askme.utils.Constants.BEARER_KEY
 import com.andriawan.askme.utils.SharedPreferencesHelper
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 
