@@ -1,7 +1,8 @@
 package com.andriawan.askme.navigation
 
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -10,38 +11,61 @@ import com.andriawan.askme.ui.screens.login.presenter.LoginScreen
 import com.andriawan.askme.ui.screens.login.viewmodel.LoginViewModel
 import com.andriawan.askme.ui.screens.onboarding.presenter.OnBoardingScreen
 import com.andriawan.askme.ui.screens.onboarding.viewmodel.OnBoardingViewModel
+import com.andriawan.askme.ui.screens.register.presenter.RegisterScreen
+import com.andriawan.askme.ui.screens.register.viewmodel.RegisterViewModel
 import com.andriawan.askme.ui.screens.splash.presenter.SplashScreen
 import com.andriawan.askme.ui.screens.splash.viewmodel.SplashScreenViewModel
+import com.andriawan.askme.utils.extensions.handleNavigation
 
-@ExperimentalMaterial3Api
 @Composable
 fun AskMeNavigation(
     navController: NavHostController,
-    startDestination: String = AskMeDestinations.SPLASH_SCREEN_PAGE
+    startDestination: String = Routes.SPLASH_SCREEN_PAGE,
+    snackBarHostState: SnackbarHostState
 ) {
     NavHost(
         navController = navController,
         startDestination = startDestination
     ) {
-        composable(AskMeDestinations.SPLASH_SCREEN_PAGE) {
+        composable(Routes.SPLASH_SCREEN_PAGE) {
             val viewModel: SplashScreenViewModel = hiltViewModel()
-            SplashScreen(viewModel = viewModel, navController = navController)
+            val lifecycleOwner = LocalLifecycleOwner.current
+            viewModel.navigateLoginPage.observe(lifecycleOwner) {
+                navController.handleNavigation(
+                    event = it,
+                    destination = Routes.LOGIN_PAGE,
+                    popUpToRoute = Routes.SPLASH_SCREEN_PAGE,
+                    inclusive = true
+                )
+            }
+            viewModel.navigateOnBoarding.observe(lifecycleOwner) {
+                navController.handleNavigation(
+                    event = it,
+                    destination = Routes.ON_BOARDING_PAGE,
+                    popUpToRoute = Routes.SPLASH_SCREEN_PAGE,
+                    inclusive = true
+                )
+            }
+            SplashScreen()
         }
-        composable(AskMeDestinations.ON_BOARDING_PAGE) {
+        composable(Routes.ON_BOARDING_PAGE) {
             val viewModel: OnBoardingViewModel = hiltViewModel()
             OnBoardingScreen(viewModel = viewModel, navController = navController)
         }
-        composable(AskMeDestinations.LOGIN_PAGE) {
+        composable(Routes.LOGIN_PAGE) {
             val viewModel: LoginViewModel = hiltViewModel()
-            LoginScreen(viewModel = viewModel, navController = navController)
+            LoginScreen(
+                viewModel = viewModel,
+                navController = navController,
+                snackBarHostState = snackBarHostState
+            )
+        }
+        composable(Routes.REGISTER_PAGE) {
+            val viewModel: RegisterViewModel = hiltViewModel()
+            RegisterScreen(
+                viewModel = viewModel,
+                navController = navController
+            )
         }
     }
-}
-
-object AskMeDestinations {
-    const val SPLASH_SCREEN_PAGE = "splash_screen"
-    const val ON_BOARDING_PAGE = "on_boarding_page"
-    const val LOGIN_PAGE = "login_page"
-    const val REGISTER_PAGE = "register_page"
-    const val HOME_PAGE = "home_page"
 }

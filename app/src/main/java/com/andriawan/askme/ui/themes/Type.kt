@@ -1,7 +1,6 @@
 package com.andriawan.askme.ui.themes
 
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Typography
+import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -19,55 +18,44 @@ val PoppinsFontFamily = FontFamily(
 )
 
 val AskMeTypography = Typography(
-    headlineLarge = TextStyle(
+    h1 = TextStyle(
         fontWeight = FontWeight.SemiBold,
         fontSize = 28.sp,
         fontFamily = PoppinsFontFamily
     ),
-    headlineMedium = TextStyle(
+    h2 = TextStyle(
         fontWeight = FontWeight.SemiBold,
         fontSize = 26.sp,
         fontFamily = PoppinsFontFamily
     ),
-    headlineSmall = TextStyle(
+    h3 = TextStyle(
         fontWeight = FontWeight.SemiBold,
         fontSize = 24.sp,
         fontFamily = PoppinsFontFamily
     ),
-    titleLarge = TextStyle(
+    h4 = TextStyle(
         fontWeight = FontWeight.Medium,
         fontSize = 22.sp,
         fontFamily = PoppinsFontFamily
     ),
-    titleMedium = TextStyle(
+    h5 = TextStyle(
         fontWeight = FontWeight.Medium,
         fontSize = 18.sp,
         fontFamily = PoppinsFontFamily
     ),
-    titleSmall = TextStyle(
+    h6 = TextStyle(
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
         fontFamily = PoppinsFontFamily
     ),
-    bodyLarge = TextStyle(
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        fontFamily = PoppinsFontFamily
-    ),
-    bodyMedium = TextStyle(
+    body1 = TextStyle(
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         fontFamily = PoppinsFontFamily
     ),
-    bodySmall = TextStyle(
+    body2 = TextStyle(
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
-        fontFamily = PoppinsFontFamily
-    ),
-    displayLarge = TextStyle(
-        fontWeight = FontWeight.SemiBold,
-        fontSize = 32.sp,
-        letterSpacing = 0.2.sp,
         fontFamily = PoppinsFontFamily
     )
 )

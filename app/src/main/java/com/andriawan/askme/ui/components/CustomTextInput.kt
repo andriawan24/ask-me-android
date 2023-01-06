@@ -6,7 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,15 +23,14 @@ import androidx.compose.ui.unit.dp
 import com.andriawan.askme.R
 import com.andriawan.askme.ui.themes.AskMeTheme
 import com.andriawan.askme.ui.themes.HintTextInputColor
-import com.andriawan.askme.utils.Constants.EMPTY
+import com.andriawan.askme.ui.themes.OnBackgroundColorLight
 import com.andriawan.askme.utils.Constants.MINUS_ONE
 
-@ExperimentalMaterial3Api
 @Composable
 fun CustomTextInput(
     modifier: Modifier = Modifier,
     label: String,
-    labelColor: Color = MaterialTheme.colorScheme.onBackground,
+    labelColor: Color = MaterialTheme.colors.onBackground,
     hint: String,
     value: String,
     onValueChanged: (String) -> Unit,
@@ -42,26 +41,26 @@ fun CustomTextInput(
     trailingIcon: @Composable () -> Unit = {},
     visualTransformation: VisualTransformation = VisualTransformation.None,
     isError: Boolean = false,
-    @StringRes errorText: Int = MINUS_ONE
+    @StringRes errorText: Int = MINUS_ONE,
+    singleLine: Boolean = true
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
             text = label,
-            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+            style = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
             color = labelColor
         )
         Spacer(modifier = Modifier.height(10.dp))
         TextField(
-            modifier = Modifier.fillMaxWidth(),
             value = value,
             onValueChange = onValueChanged,
+            modifier = Modifier.fillMaxWidth(),
             placeholder = {
                 Text(
                     text = hint,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.body1,
                     color = HintTextInputColor,
-                    modifier = Modifier
-                        .wrapContentHeight(Alignment.CenterVertically)
+                    modifier = Modifier.wrapContentHeight(Alignment.CenterVertically)
                 )
             },
             leadingIcon = {
@@ -74,12 +73,14 @@ fun CustomTextInput(
             },
             trailingIcon = trailingIcon,
             colors = TextFieldDefaults.textFieldColors(
-                containerColor = Color.White,
+                backgroundColor = Color.White,
                 focusedIndicatorColor = Color.Unspecified,
                 unfocusedIndicatorColor = Color.Unspecified
             ),
             shape = MaterialTheme.shapes.small,
-            textStyle = MaterialTheme.typography.bodyMedium,
+            textStyle = MaterialTheme.typography.body1.copy(
+                color = OnBackgroundColorLight
+            ),
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
                 imeAction = imeAction
@@ -87,47 +88,32 @@ fun CustomTextInput(
             keyboardActions = keyboardActions,
             visualTransformation = visualTransformation,
             isError = isError,
-            supportingText = {
-                if (isError && errorText != MINUS_ONE) Text(text = stringResource(id = errorText))
-            }
+            singleLine = singleLine
         )
-    }
-}
 
-@ExperimentalMaterial3Api
-@Preview
-@Composable
-fun CustomTextInputPreviewLight() {
-    AskMeTheme {
-        Surface(
-            color = MaterialTheme.colorScheme.background,
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
-                .padding(24.dp)
-        ) {
-            CustomTextInput(
-                label = "Email",
-                hint = "Enter your email",
-                value = "Name",
-                onValueChanged = { },
-                leadingIcon = painterResource(id = R.drawable.ic_email)
+        if (errorText != MINUS_ONE) {
+            Text(
+                text = stringResource(id = errorText),
+                style = MaterialTheme.typography.body2.copy(
+                    color = MaterialTheme.colors.onError
+                )
             )
         }
     }
 }
 
-@ExperimentalMaterial3Api
-@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Preview(showBackground = true)
+@Preview(uiMode = UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-fun CustomTextInputPreviewDark() {
+fun CustomTextInputPreviewLight() {
     AskMeTheme {
         Surface(
-            color = MaterialTheme.colorScheme.background,
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
+                .background(MaterialTheme.colors.background)
                 .padding(24.dp)
         ) {
             CustomTextInput(
+                modifier = Modifier.background(MaterialTheme.colors.background),
                 label = "Email",
                 hint = "Enter your email",
                 value = "",

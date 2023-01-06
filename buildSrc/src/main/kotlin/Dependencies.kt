@@ -1,6 +1,6 @@
 object Versions {
     const val coreKtxVersion = "1.9.0"
-    const val composeVersion = "2022.10.00"
+    const val composeVersion = "2022.12.00"
     const val composeActivityVersion = "1.6.1"
     const val composeViewModelVersion = "2.5.1"
     const val hiltNavigationComposeVersion = "1.0.0"
@@ -8,7 +8,7 @@ object Versions {
     const val dataStoreVersion = "1.0.0"
     const val retrofitVersion = "2.9.0"
     const val okHttpVersion = "4.10.0"
-    const val hiltVersion = "2.44"
+    const val hiltVersion = "2.44.2"
     const val shimmerVersion = "0.5.0"
     const val timberVersion = "5.0.1"
 
@@ -16,6 +16,8 @@ object Versions {
     const val jUnitVersion = "4.13.2"
     const val extJUnitVersion = "1.1.3"
     const val espressoVersion = "3.4.0"
+    const val mockitoVersion = "4.11.0"
+    const val ioMockkVersion = "1.13.3"
 }
 
 object Dependencies {
@@ -23,7 +25,7 @@ object Dependencies {
 
     // Compose
     const val composeBom = "androidx.compose:compose-bom:${Versions.composeVersion}"
-    const val composeMaterial3 = "androidx.compose.material3:material3"
+    const val composeMaterial3 = "androidx.compose.material:material"
     const val composeMaterialIconExtended = "androidx.compose.material:material-icons-extended"
     const val composeFoundation = "androidx.compose.foundation:foundation"
     const val composeUi = "androidx.compose.ui:ui"
@@ -62,4 +64,6 @@ object Dependencies {
     const val jUnit = "junit:junit:${Versions.jUnitVersion}"
     const val extJUnit = "androidx.test.ext:junit:${Versions.extJUnitVersion}"
     const val espresso = "androidx.test.espresso:espresso-core:${Versions.espressoVersion}"
+    const val mockito = "org.mockito:mockito-core:${Versions.mockitoVersion}"
+    const val ioMockk = "io.mockk:mockk:${Versions.ioMockkVersion}"
 }

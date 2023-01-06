@@ -29,25 +29,41 @@ class LoginViewModel @Inject constructor(
     sharedPreferencesHelper: SharedPreferencesHelper
 ) : ViewModel() {
 
-    private val _signInResult = MutableLiveData<ResultState<String?>>()
-    val signInResult: LiveData<ResultState<String?>> = _signInResult
-
     var loginUiState by mutableStateOf(LoginUiState())
         private set
 
     init {
         if (sharedPreferencesHelper.getString(Constants.ACCESS_TOKEN_KEY).isNotEmpty()) {
-            _signInResult.value = ResultState.Success(EMPTY)
+
         }
     }
 
     fun onEvent(event: LoginUiEvent) {
         when (event) {
-            is LoginUiEvent.OnEmailChanged -> validateEmail(event.email)
-            is LoginUiEvent.OnPasswordChanged -> validatePassword(event.password)
+            is LoginUiEvent.OnEmailChanged -> {
+                validateEmail(event.email)
+                validatePassword(loginUiState.password)
+                loginUiState = loginUiState.copy(
+                    signInButtonEnabled = loginUiState.emailError == MINUS_ONE
+                            && loginUiState.passwordError == MINUS_ONE
+                )
+            }
+            is LoginUiEvent.OnPasswordChanged -> {
+                validateEmail(loginUiState.email)
+                validatePassword(event.password)
+                loginUiState = loginUiState.copy(
+                    signInButtonEnabled = loginUiState.emailError == MINUS_ONE
+                            && loginUiState.passwordError == MINUS_ONE
+                )
+            }
             is LoginUiEvent.OnPasswordVisibilityChanged -> loginUiState =
                 loginUiState.copy(isPasswordVisible = event.isPasswordVisible)
-            LoginUiEvent.OnSubmitClicked -> signIn(loginUiState.email, loginUiState.password)
+            LoginUiEvent.OnSubmitClicked -> {
+                signIn(loginUiState.email, loginUiState.password)
+                loginUiState = loginUiState.copy(
+                    signInButtonEnabled = false
+                )
+            }
         }
     }
 
@@ -55,7 +71,28 @@ class LoginViewModel @Inject constructor(
         val param = SignInUseCase.Param(email, password)
 
         viewModelScope.launch {
-            signInUseCase.execute(param).collectLatest { _signInResult.value = it }
+            signInUseCase.execute(param).collectLatest {
+                when (it) {
+                    is ResultState.Loading -> {
+                        loginUiState = loginUiState.copy(
+                            showLoading = true,
+                            signInButtonEnabled = false
+                        )
+                    }
+
+                    is ResultState.Success -> {
+
+                    }
+
+                    is ResultState.Error -> {
+                        loginUiState = loginUiState.copy(
+                            showLoading = false,
+                            signInButtonEnabled = true,
+                            showError = it.exception
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -63,12 +100,12 @@ class LoginViewModel @Inject constructor(
         loginUiState = if (email.isBlank()) {
             loginUiState.copy(
                 email = email,
-                emailError = R.string.empty_email_error_text
+                emailError = R.string.error_empty_email_error_text
             )
         } else if (!Pattern.matches(Patterns.EMAIL_ADDRESS.pattern(), email)) {
             loginUiState.copy(
                 email = email,
-                emailError = R.string.valid_email_error_text
+                emailError = R.string.error_valid_email_error_text
             )
         } else {
             loginUiState.copy(
@@ -82,7 +119,12 @@ class LoginViewModel @Inject constructor(
         loginUiState = if (password.isBlank()) {
             loginUiState.copy(
                 password = password,
-                passwordError = R.string.empty_password_error_text
+                passwordError = R.string.error_empty_password_error_text
+            )
+        } else if (password.length !in 8..14) {
+            loginUiState.copy(
+                password = password,
+                passwordError = R.string.error_length_password_error_text
             )
         } else {
             loginUiState.copy(

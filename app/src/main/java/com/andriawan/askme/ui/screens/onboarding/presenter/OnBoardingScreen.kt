@@ -3,9 +3,9 @@ package com.andriawan.askme.ui.screens.onboarding.presenter
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.andriawan.askme.R
-import com.andriawan.askme.navigation.AskMeDestinations
+import com.andriawan.askme.navigation.Routes
 import com.andriawan.askme.ui.components.CustomButton
 import com.andriawan.askme.ui.screens.onboarding.models.OnBoardingUiEvent
 import com.andriawan.askme.ui.screens.onboarding.viewmodel.OnBoardingViewModel
@@ -32,9 +32,9 @@ fun OnBoardingScreen(
 ) {
     viewModel.goToLoginPage.observe(viewLifecycleOwner) {
         it.getContentIfNotHandled()?.let {
-            navController.navigate(AskMeDestinations.LOGIN_PAGE) {
+            navController.navigate(Routes.LOGIN_PAGE) {
                 launchSingleTop = true
-                popUpTo(AskMeDestinations.SPLASH_SCREEN_PAGE) {
+                popUpTo(Routes.SPLASH_SCREEN_PAGE) {
                     inclusive = true
                 }
             }
@@ -66,14 +66,14 @@ fun OnBoardingContent(onGetStartedClicked: () -> Unit) {
         Spacer(modifier = Modifier.height(36.dp))
         Text(
             text = stringResource(id = R.string.on_boarding_title_text),
-            style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.onBackground
+            style = MaterialTheme.typography.h3,
+            color = MaterialTheme.colors.onBackground
         )
         Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = stringResource(id = R.string.on_boarding_description_text),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.body1,
+            color = MaterialTheme.colors.onBackground,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(90.dp))
@@ -91,9 +91,8 @@ fun OnBoardingScreenPreview() {
     AskMeTheme {
         Surface(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
+                .background(MaterialTheme.colors.background)
                 .padding(24.dp),
-            color = MaterialTheme.colorScheme.background
         ) {
             OnBoardingContent(onGetStartedClicked = { })
         }

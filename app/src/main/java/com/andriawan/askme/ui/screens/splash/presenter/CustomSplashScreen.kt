@@ -2,13 +2,14 @@ package com.andriawan.askme.ui.screens.splash.presenter
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.andriawan.askme.R
-import com.andriawan.askme.navigation.AskMeDestinations
+import com.andriawan.askme.navigation.Routes
 import com.andriawan.askme.ui.screens.splash.viewmodel.SplashScreenViewModel
 import com.andriawan.askme.ui.themes.AskMeTheme
 import com.andriawan.askme.utils.Constants.EMPTY
@@ -28,51 +29,8 @@ import com.andriawan.askme.utils.None
 import com.andriawan.askme.utils.SingleEvents
 
 @Composable
-fun SplashScreen(
-    modifier: Modifier = Modifier,
-    viewModel: SplashScreenViewModel,
-    navController: NavController,
-    viewLifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
-) {
-    viewModel.navigateLoginPage.observe(viewLifecycleOwner) {
-        handleNavigationEvent(
-            event = it,
-            navController = navController,
-            destination = AskMeDestinations.LOGIN_PAGE,
-            popUpToRoute = AskMeDestinations.SPLASH_SCREEN_PAGE,
-            inclusive = true
-        )
-    }
-
-    viewModel.navigateOnBoarding.observe(viewLifecycleOwner) {
-        handleNavigationEvent(
-            event = it,
-            navController = navController,
-            destination = AskMeDestinations.ON_BOARDING_PAGE,
-            popUpToRoute = AskMeDestinations.SPLASH_SCREEN_PAGE,
-            inclusive = true
-        )
-    }
-
+fun SplashScreen(modifier: Modifier = Modifier) {
     SplashScreenContent(modifier = modifier)
-}
-
-private fun handleNavigationEvent(
-    event: SingleEvents<None>,
-    navController: NavController,
-    destination: String,
-    popUpToRoute: String = EMPTY,
-    inclusive: Boolean = false,
-    launchSingleTop: Boolean = false
-) {
-    event.getContentIfNotHandled()?.let {
-        navController.navigate(destination) {
-            this.launchSingleTop = launchSingleTop
-            popUpTo(popUpToRoute) {
-                this.inclusive = inclusive
-            }
-        }
-    }
 }
 
 @Composable
@@ -89,27 +47,18 @@ fun SplashScreenContent(modifier: Modifier = Modifier) {
         )
         Text(
             text = stringResource(id = R.string.app_title),
-            style = MaterialTheme.typography.displayLarge,
-            color = MaterialTheme.colorScheme.onBackground
+            style = MaterialTheme.typography.h1,
+            color = MaterialTheme.colors.onBackground
         )
     }
 }
 
-@Preview
+@Preview(showBackground = true)
+@Preview(uiMode = UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun SplashScreenPreview() {
     AskMeTheme {
-        Surface(color = MaterialTheme.colorScheme.background) {
-            SplashScreenContent()
-        }
-    }
-}
-
-@Preview(uiMode = UI_MODE_NIGHT_YES)
-@Composable
-fun SplashScreenPreviewDarkMode() {
-    AskMeTheme {
-        Surface(color = MaterialTheme.colorScheme.background) {
+        Surface(color = MaterialTheme.colors.background) {
             SplashScreenContent()
         }
     }

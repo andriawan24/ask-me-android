@@ -9,5 +9,8 @@ data class LoginUiState(
     val password: String = EMPTY,
     @StringRes val emailError: Int = MINUS_ONE,
     @StringRes val passwordError: Int = MINUS_ONE,
-    val isPasswordVisible: Boolean = false
+    val isPasswordVisible: Boolean = false,
+    val signInButtonEnabled: Boolean = false,
+    val showError: Exception? = null,
+    val showLoading: Boolean = false
 )
