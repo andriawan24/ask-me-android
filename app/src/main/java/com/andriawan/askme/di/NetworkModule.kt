@@ -1,15 +1,13 @@
 package com.andriawan.askme.di
 
-import android.content.Context
 import com.andriawan.askme.BuildConfig
 import com.andriawan.askme.data.network.AskMeAPI
-import com.andriawan.askme.data.network.AuthorizationHeaderInterceptor
+import com.andriawan.askme.data.network.interceptors.AuthorizationHeaderInterceptor
 import com.andriawan.askme.utils.Constants.TIMEOUT_DEFAULT
 import com.andriawan.askme.utils.SharedPreferencesHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

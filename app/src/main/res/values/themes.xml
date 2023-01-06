@@ -1,37 +1,7 @@
-<resources>
-    <!-- Base application theme. -->
-    <style name="Theme.AskMe" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primary_color</item>
-        <item name="colorPrimaryVariant">@color/primary_color</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-    </style>
-    <style name="Title">
-        <item name="android:fontFamily">@font/poppins_semibold</item>
-        <item name="android:textSize">@dimen/text_24</item>
-        <item name="android:textColor">@color/primary_text_color</item>
-    </style>
-    <style name="Title2">
-        <item name="android:fontFamily">@font/poppins_semibold</item>
-        <item name="android:textSize">@dimen/text_16</item>
-        <item name="android:textColor">@color/primary_text_color</item>
-    </style>
-    <style name="Subtitle">
-        <item name="android:fontFamily">@font/poppins</item>
-        <item name="android:textSize">@dimen/text_14</item>
-        <item name="android:textColor">@color/subtitle_text_color</item>
-    </style>
-    <style name="Body">
-        <item name="android:fontFamily">@font/poppins</item>
-        <item name="android:textSize">@dimen/text_14</item>
-        <item name="android:textColor">@color/primary_text_color</item>
-    </style>
-    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">@dimen/text_16</item>
-        <item name="android:fontFamily">@font/poppins_semibold</item>
-        <item name="cornerRadius">@dimen/dimen_8</item>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.AskMe" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/background_color</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 </resources>

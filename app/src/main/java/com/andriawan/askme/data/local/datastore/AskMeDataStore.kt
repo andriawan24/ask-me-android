@@ -1,7 +1,6 @@
 package com.andriawan.askme.data.local.datastore
 
 import android.content.Context
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
@@ -12,6 +11,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 import java.io.IOException
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = AskMeDataStore.PREFERENCE_NAME)
@@ -23,10 +23,7 @@ class AskMeDataStore(private val context: Context) {
             if (exception is IOException) {
                 emit(emptyPreferences())
             } else {
-                Log.e(
-                    AskMeDataStore::class.simpleName,
-                    "getFirstTime: ${exception.localizedMessage}"
-                )
+                Timber.e("getFirstTime: " + exception.localizedMessage)
             }
         }
         .map { preferences ->
@@ -51,10 +48,7 @@ class AskMeDataStore(private val context: Context) {
                 if (exception is IOException) {
                     emit(emptyPreferences())
                 } else {
-                    Log.e(
-                        AskMeDataStore::class.simpleName,
-                        "getFirstTime: ${exception.localizedMessage}"
-                    )
+                    Timber.e("getUserModel: " + exception.localizedMessage)
                 }
             }.map { preferences ->
                 val userString = preferences[userModelKey]

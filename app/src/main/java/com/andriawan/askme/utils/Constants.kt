@@ -1,8 +1,8 @@
 package com.andriawan.askme.utils
 
-import android.content.Context
+import androidx.compose.ui.unit.dp
 import com.andriawan.askme.R
-import java.util.Calendar
+import java.util.*
 
 object Constants {
     const val NEW_LINE = "\n"
@@ -12,14 +12,12 @@ object Constants {
     const val ONE = 1
     const val TWO = 2
     const val COMMA_WITH_SPACE = ", "
+    const val MINUS_ONE = -1
 
     const val MINIMUM_PASSWORD_LENGTH = 8
     const val MAXIMUM_PASSWORD_LENGTH = 14
 
-    const val DEFAULT_MARGIN = 24
-
-    fun Context.dip(value: Int): Int = (value * resources.displayMetrics.density).toInt()
-    fun Context.dip(value: Float): Int = (value * resources.displayMetrics.density).toInt()
+    val DEFAULT_MARGIN = 24.dp
 
     // Network
     const val TIMEOUT_DEFAULT = 30L
@@ -28,12 +26,6 @@ object Constants {
     const val ACCESS_TOKEN_KEY = "access_token"
     const val UNAUTHORIZED = "unauthorized"
 
-    // API Services
-    const val SIGN_IN_SERVICE = "/v1/api/auth/sign-in"
-    const val SIGN_UP_SERVICE = "/v1/api/auth/sign-up"
-    const val GET_CREDENTIAL_SERVICE = "/v1/api/auth/me"
-    const val GET_TOPICS = "/v1/api/topics"
-
     // Alert Types
     enum class AlertType {
         WARNING,
@@ -41,26 +33,14 @@ object Constants {
         ERROR
     }
 
-    fun getGreetings(): Int {
+    fun getGreetingsTextResource(): Int {
         val calendar = Calendar.getInstance()
         val hours = calendar.get(Calendar.HOUR_OF_DAY)
-
         return when {
-            hours < 12 -> {
-                R.string.morning_greetings
-            }
-
-            hours < 17 -> {
-                R.string.afternoon_greetings
-            }
-
-            hours < 20 -> {
-                R.string.evening_greetings
-            }
-
-            else -> {
-                R.string.night_greetings
-            }
+            hours < 12 -> R.string.morning_greetings
+            hours < 17 -> R.string.afternoon_greetings
+            hours < 20 -> R.string.evening_greetings
+            else -> R.string.night_greetings
         }
     }
 }
