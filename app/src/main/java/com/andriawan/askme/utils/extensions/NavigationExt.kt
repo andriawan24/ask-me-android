@@ -5,7 +5,7 @@ import com.andriawan.askme.utils.Constants
 import com.andriawan.askme.utils.None
 import com.andriawan.askme.utils.SingleEvents
 
-fun NavHostController.handleNavigation(
+fun NavHostController.handleNavigationWithSingleEvent(
     event: SingleEvents<None>,
     destination: String,
     popUpToRoute: String = Constants.EMPTY,

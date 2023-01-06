@@ -87,7 +87,8 @@ fun RegisterScreen(
         isRegisterButtonEnabled = state.registerButtonEnabled,
         onSignInClicked = {
             navController.navigateUp()
-        }
+        },
+        isPasswordConfirmationVisible = state.passwordConfirmationVisible
     )
 }
 
@@ -102,6 +103,7 @@ fun RegisterScreenContent(
     password: String,
     passwordError: Int? = null,
     isPasswordVisible: Boolean = false,
+    isPasswordConfirmationVisible: Boolean = false,
     onPasswordVisibilityChanged: (Boolean) -> Unit,
     onPasswordChanged: (String) -> Unit,
     passwordConfirmation: String,
@@ -209,11 +211,11 @@ fun RegisterScreenContent(
                 leadingIcon = painterResource(id = R.drawable.ic_password),
                 trailingIcon = {
                     val iconType =
-                        if (isPasswordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                        if (isPasswordConfirmationVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
                     val contentDescription =
-                        if (isPasswordVisible) "Hide Password" else "Show Password"
+                        if (isPasswordConfirmationVisible) "Hide Password" else "Show Password"
 
-                    IconButton(onClick = { onPasswordConfirmationVisibilityChanged.invoke(!isPasswordVisible) }) {
+                    IconButton(onClick = { onPasswordConfirmationVisibilityChanged.invoke(!isPasswordConfirmationVisible) }) {
                         Icon(
                             iconType,
                             contentDescription = contentDescription,
@@ -275,7 +277,7 @@ private fun RegisterTitle(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(10.dp))
         Text(
             text = stringResource(id = R.string.register_welcome_subtitle_text),
-            color = MaterialTheme.colors.onPrimary,
+            color = MaterialTheme.colors.onBackground,
             style = MaterialTheme.typography.body1
         )
     }

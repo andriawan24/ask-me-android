@@ -1,8 +1,9 @@
-package com.andriawan.askme
+package com.andriawan.askme.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -26,7 +27,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     content = {
                         Surface(
-                            modifier = Modifier.padding(it),
+                            modifier = Modifier.fillMaxSize().padding(it),
                             color = MaterialTheme.colors.background
                         ) {
                             AskMeNavigation(

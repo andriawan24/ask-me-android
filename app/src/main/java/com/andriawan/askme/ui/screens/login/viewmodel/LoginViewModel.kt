@@ -4,16 +4,12 @@ import android.util.Patterns
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andriawan.askme.R
 import com.andriawan.askme.domain.usecases.auth.SignInUseCase
 import com.andriawan.askme.ui.screens.login.models.LoginUiEvent
 import com.andriawan.askme.ui.screens.login.models.LoginUiState
-import com.andriawan.askme.utils.Constants
-import com.andriawan.askme.utils.Constants.EMPTY
 import com.andriawan.askme.utils.Constants.MINUS_ONE
 import com.andriawan.askme.utils.ResultState
 import com.andriawan.askme.utils.SharedPreferencesHelper
@@ -29,38 +25,32 @@ class LoginViewModel @Inject constructor(
     sharedPreferencesHelper: SharedPreferencesHelper
 ) : ViewModel() {
 
-    var loginUiState by mutableStateOf(LoginUiState())
+    var uiState by mutableStateOf(LoginUiState())
         private set
-
-    init {
-        if (sharedPreferencesHelper.getString(Constants.ACCESS_TOKEN_KEY).isNotEmpty()) {
-
-        }
-    }
 
     fun onEvent(event: LoginUiEvent) {
         when (event) {
             is LoginUiEvent.OnEmailChanged -> {
                 validateEmail(event.email)
-                validatePassword(loginUiState.password)
-                loginUiState = loginUiState.copy(
-                    signInButtonEnabled = loginUiState.emailError == MINUS_ONE
-                            && loginUiState.passwordError == MINUS_ONE
+                validatePassword(uiState.password)
+                uiState = uiState.copy(
+                    signInButtonEnabled = uiState.emailError == MINUS_ONE
+                            && uiState.passwordError == MINUS_ONE
                 )
             }
             is LoginUiEvent.OnPasswordChanged -> {
-                validateEmail(loginUiState.email)
+                validateEmail(uiState.email)
                 validatePassword(event.password)
-                loginUiState = loginUiState.copy(
-                    signInButtonEnabled = loginUiState.emailError == MINUS_ONE
-                            && loginUiState.passwordError == MINUS_ONE
+                uiState = uiState.copy(
+                    signInButtonEnabled = uiState.emailError == MINUS_ONE
+                            && uiState.passwordError == MINUS_ONE
                 )
             }
-            is LoginUiEvent.OnPasswordVisibilityChanged -> loginUiState =
-                loginUiState.copy(isPasswordVisible = event.isPasswordVisible)
+            is LoginUiEvent.OnPasswordVisibilityChanged -> uiState =
+                uiState.copy(isPasswordVisible = event.isPasswordVisible)
             LoginUiEvent.OnSubmitClicked -> {
-                signIn(loginUiState.email, loginUiState.password)
-                loginUiState = loginUiState.copy(
+                signIn(uiState.email, uiState.password)
+                uiState = uiState.copy(
                     signInButtonEnabled = false
                 )
             }
@@ -74,7 +64,7 @@ class LoginViewModel @Inject constructor(
             signInUseCase.execute(param).collectLatest {
                 when (it) {
                     is ResultState.Loading -> {
-                        loginUiState = loginUiState.copy(
+                        uiState = uiState.copy(
                             showLoading = true,
                             signInButtonEnabled = false
                         )
@@ -85,10 +75,10 @@ class LoginViewModel @Inject constructor(
                     }
 
                     is ResultState.Error -> {
-                        loginUiState = loginUiState.copy(
+                        uiState = uiState.copy(
                             showLoading = false,
                             signInButtonEnabled = true,
-                            showError = it.exception
+                            errorLogin = it.exception
                         )
                     }
                 }
@@ -97,18 +87,18 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun validateEmail(email: String) {
-        loginUiState = if (email.isBlank()) {
-            loginUiState.copy(
+        uiState = if (email.isBlank()) {
+            uiState.copy(
                 email = email,
                 emailError = R.string.error_empty_email_error_text
             )
         } else if (!Pattern.matches(Patterns.EMAIL_ADDRESS.pattern(), email)) {
-            loginUiState.copy(
+            uiState.copy(
                 email = email,
                 emailError = R.string.error_valid_email_error_text
             )
         } else {
-            loginUiState.copy(
+            uiState.copy(
                 email = email,
                 emailError = MINUS_ONE
             )
@@ -116,18 +106,18 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun validatePassword(password: String) {
-        loginUiState = if (password.isBlank()) {
-            loginUiState.copy(
+        uiState = if (password.isBlank()) {
+            uiState.copy(
                 password = password,
                 passwordError = R.string.error_empty_password_error_text
             )
         } else if (password.length !in 8..14) {
-            loginUiState.copy(
+            uiState.copy(
                 password = password,
                 passwordError = R.string.error_length_password_error_text
             )
         } else {
-            loginUiState.copy(
+            uiState.copy(
                 password = password,
                 passwordError = MINUS_ONE
             )

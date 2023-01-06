@@ -11,6 +11,6 @@ data class LoginUiState(
     @StringRes val passwordError: Int = MINUS_ONE,
     val isPasswordVisible: Boolean = false,
     val signInButtonEnabled: Boolean = false,
-    val showError: Exception? = null,
+    val errorLogin: Exception? = null,
     val showLoading: Boolean = false
 )

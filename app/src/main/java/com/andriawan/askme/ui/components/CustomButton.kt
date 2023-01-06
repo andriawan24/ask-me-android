@@ -1,6 +1,7 @@
 package com.andriawan.askme.ui.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -33,6 +34,10 @@ fun CustomButton(
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
             disabledBackgroundColor = OnBackgroundColorLight
+        ),
+        contentPadding = PaddingValues(
+            horizontal = 24.dp,
+            vertical = 6.dp
         )
     ) {
         Text(
