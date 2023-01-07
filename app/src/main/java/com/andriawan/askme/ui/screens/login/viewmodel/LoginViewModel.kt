@@ -12,8 +12,9 @@ import com.andriawan.askme.ui.screens.login.models.LoginUiEvent
 import com.andriawan.askme.ui.screens.login.models.LoginUiState
 import com.andriawan.askme.utils.Constants.MINUS_ONE
 import com.andriawan.askme.utils.ResultState
-import com.andriawan.askme.utils.SharedPreferencesHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.regex.Pattern
@@ -21,12 +22,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val signInUseCase: SignInUseCase,
-    sharedPreferencesHelper: SharedPreferencesHelper
+    private val signInUseCase: SignInUseCase
 ) : ViewModel() {
 
     var uiState by mutableStateOf(LoginUiState())
         private set
+
+    private val _loginStatusChanged = MutableSharedFlow<Boolean>()
+    val loginStatusChanged = _loginStatusChanged.asSharedFlow()
+
+    private val _showErrorMessage = MutableSharedFlow<Exception>()
+    val showErrorMessage = _showErrorMessage.asSharedFlow()
 
     fun onEvent(event: LoginUiEvent) {
         when (event) {
@@ -71,14 +77,14 @@ class LoginViewModel @Inject constructor(
                     }
 
                     is ResultState.Success -> {
-
+                        _loginStatusChanged.emit(true)
                     }
 
                     is ResultState.Error -> {
+                        _showErrorMessage.emit(it.exception)
                         uiState = uiState.copy(
                             showLoading = false,
-                            signInButtonEnabled = true,
-                            errorLogin = it.exception
+                            signInButtonEnabled = true
                         )
                     }
                 }

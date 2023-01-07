@@ -70,24 +70,14 @@ fun RegisterScreen(
         passwordConfirmation = state.passwordConfirmation,
         passwordConfirmationError = if (state.passwordConfirmationError != Constants.MINUS_ONE) state.passwordConfirmationError else null,
         onPasswordConfirmationChanged = {
-            viewModel.onEvent(
-                RegisterUiEvent.OnPasswordConfirmationChanged(
-                    it
-                )
-            )
+            viewModel.onEvent(RegisterUiEvent.OnPasswordConfirmationChanged(it))
         },
         onPasswordConfirmationVisibilityChanged = {
-            viewModel.onEvent(
-                RegisterUiEvent.OnPasswordConfirmationVisibilityChanged(
-                    it
-                )
-            )
+            viewModel.onEvent(RegisterUiEvent.OnPasswordConfirmationVisibilityChanged(it))
         },
         onRegisterClicked = { viewModel.onEvent(RegisterUiEvent.OnSignUp) },
         isRegisterButtonEnabled = state.registerButtonEnabled,
-        onSignInClicked = {
-            navController.navigateUp()
-        },
+        onSignInClicked = { navController.navigateUp() },
         isPasswordConfirmationVisible = state.passwordConfirmationVisible
     )
 }

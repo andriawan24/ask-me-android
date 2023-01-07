@@ -5,10 +5,13 @@ import com.andriawan.askme.domain.repository.TopicRepository
 import com.andriawan.askme.utils.FlowableUseCase
 import com.andriawan.askme.utils.None
 import com.andriawan.askme.utils.ResultState
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class GetTopicUseCase(
+@ViewModelScoped
+class GetTopicUseCase @Inject constructor(
     private val repository: TopicRepository
 ): FlowableUseCase<None, List<TopicModel>> {
 

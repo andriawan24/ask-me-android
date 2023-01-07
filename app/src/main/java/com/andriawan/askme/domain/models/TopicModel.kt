@@ -4,5 +4,5 @@ data class TopicModel(
     val id: Int,
     val name: String,
     val description: String,
-    val imageURL: String? = null
+    val imageURL: String
 )

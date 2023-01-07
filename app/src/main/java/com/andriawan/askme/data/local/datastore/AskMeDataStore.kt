@@ -18,7 +18,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = Ask
 
 class AskMeDataStore(private val context: Context) {
 
-    suspend fun getFirstTime(): Boolean = context.dataStore.data
+    suspend fun getFirstTimeLaunchApp(): Boolean = context.dataStore.data
         .catch { exception ->
             if (exception is IOException) {
                 emit(emptyPreferences())
@@ -30,19 +30,19 @@ class AskMeDataStore(private val context: Context) {
             preferences[firstTimeKey].orTrue()
         }.first()
 
-    suspend fun setFirstTime(isFirstTime: Boolean) {
+    suspend fun setFirstTimeLaunchApp(isFirstTime: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[firstTimeKey] = isFirstTime
         }
     }
 
-    suspend fun saveUserModel(userModel: UserModel?) {
+    suspend fun saveUser(userModel: UserModel?) {
         context.dataStore.edit { preferences ->
             preferences[userModelKey] = Gson().toJson(userModel)
         }
     }
 
-    suspend fun getUserModel(): UserModel? {
+    suspend fun getUser(): UserModel? {
         return context.dataStore.data
             .catch { exception ->
                 if (exception is IOException) {

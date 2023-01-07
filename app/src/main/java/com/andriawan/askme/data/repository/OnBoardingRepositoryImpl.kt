@@ -9,10 +9,10 @@ class OnBoardingRepositoryImpl @Inject constructor(
 ): OnBoardingRepository {
 
     override suspend fun getFirstTime(): Boolean {
-        return dataStore.getFirstTime()
+        return dataStore.getFirstTimeLaunchApp()
     }
 
     override suspend fun setFirstTime(isFirstTime: Boolean) {
-        dataStore.setFirstTime(isFirstTime)
+        dataStore.setFirstTimeLaunchApp(isFirstTime)
     }
 }

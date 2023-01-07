@@ -5,11 +5,12 @@ import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -25,7 +26,7 @@ import com.andriawan.askme.ui.screens.splash.presenter.SplashScreen
 import com.andriawan.askme.ui.screens.splash.viewmodel.SplashScreenViewModel
 import com.andriawan.askme.utils.extensions.handleNavigationWithSingleEvent
 import com.andriawan.askme.utils.network.getError
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -34,7 +35,6 @@ fun AskMeNavigation(
     startDestination: String = Routes.SPLASH_SCREEN_PAGE,
     snackBarHostState: SnackbarHostState,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-    scope: CoroutineScope = rememberCoroutineScope(),
     context: Context = LocalContext.current
 ) {
     NavHost(
@@ -80,13 +80,20 @@ fun AskMeNavigation(
         composable(Routes.LOGIN_PAGE) {
             val viewModel: LoginViewModel = hiltViewModel()
             val state = viewModel.uiState
-            LaunchedEffect(state.errorLogin) {
-                scope.launch {
-                    if (state.errorLogin != null) {
-                        snackBarHostState.showSnackbar(
-                            message = state.errorLogin.getError(context),
-                            duration = SnackbarDuration.Short
-                        )
+            LaunchedEffect(true) {
+                lifecycleOwner.lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+                    launch {
+                        viewModel.loginStatusChanged.collectLatest {
+                            navController.navigate(Routes.HOME_PAGE)
+                        }
+                    }
+                    launch {
+                        viewModel.showErrorMessage.collectLatest {
+                            snackBarHostState.showSnackbar(
+                                message = it.getError(context),
+                                duration = SnackbarDuration.Short
+                            )
+                        }
                     }
                 }
             }

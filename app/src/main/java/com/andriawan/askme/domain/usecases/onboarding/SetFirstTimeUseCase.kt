@@ -4,10 +4,13 @@ import com.andriawan.askme.domain.repository.OnBoardingRepository
 import com.andriawan.askme.utils.FlowableUseCase
 import com.andriawan.askme.utils.None
 import com.andriawan.askme.utils.ResultState
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class SetFirstTimeUseCase(
+@ViewModelScoped
+class SetFirstTimeUseCase @Inject constructor(
     private val repository: OnBoardingRepository
 ): FlowableUseCase<SetFirstTimeUseCase.Param, None> {
 

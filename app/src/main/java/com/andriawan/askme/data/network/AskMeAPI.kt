@@ -13,13 +13,13 @@ import retrofit2.http.POST
 interface AskMeAPI {
 
     @POST(SIGN_IN_SERVICE)
-    suspend fun signIn(@Body postLoginBody: PostLoginBodyDTO): BaseResponse<LoginDTO>
+    suspend fun signIn(@Body postLoginBody: LoginBodyDTO): BaseResponse<LoginDTO>
 
     @GET(GET_CREDENTIAL_SERVICE)
     suspend fun getCredential(): BaseResponse<UserDTO>
 
     @POST(SIGN_UP_SERVICE)
-    suspend fun signUp(@Body postRegisterBody: PostRegisterBodyDTO): BaseResponse<UserDTO>
+    suspend fun signUp(@Body postRegisterBody: RegisterBodyDTO): BaseResponse<UserDTO>
 
     @GET(GET_TOPICS)
     suspend fun getTopics(): BaseResponse<List<TopicDTO>>

@@ -1,10 +1,13 @@
 package com.andriawan.askme.domain.usecases.auth
 
 import com.andriawan.askme.utils.*
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class SignOutUseCase(
+@ViewModelScoped
+class SignOutUseCase @Inject constructor(
     private val sharedPreferencesHelper: SharedPreferencesHelper
 ): FlowableUseCase<None, None> {
 

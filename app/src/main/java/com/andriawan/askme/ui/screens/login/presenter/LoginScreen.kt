@@ -3,19 +3,14 @@ package com.andriawan.askme.ui.screens.login.presenter
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,7 +31,6 @@ import com.andriawan.askme.ui.themes.HintTextInputColor
 import com.andriawan.askme.utils.Constants.MINUS_ONE
 import com.andriawan.askme.utils.extensions.orDefault
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginScreen(
     email: String,
@@ -60,14 +54,7 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.height(30.dp))
         CustomTextInput(
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .onPreviewKeyEvent {
-                    if (it.key == Key.Tab) {
-                        focusManager.moveFocus(FocusDirection.Down)
-                        true
-                    } else false
-                },
+            modifier = Modifier.padding(horizontal = 24.dp),
             label = stringResource(id = R.string.input_email_label_text),
             hint = stringResource(id = R.string.input_email_hint_text),
             value = email,
@@ -85,14 +72,7 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.height(30.dp))
         CustomTextInput(
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .onPreviewKeyEvent {
-                    if (it.key == Key.Tab) {
-                        focusManager.clearFocus()
-                        true
-                    } else false
-                },
+            modifier = Modifier.padding(horizontal = 24.dp),
             label = stringResource(id = R.string.input_password_label_text),
             hint = stringResource(id = R.string.input_password_hint_text),
             value = password,
