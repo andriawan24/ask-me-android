@@ -97,6 +97,9 @@ dependencies {
     // Timber
     implementation Dependencies.timber
 
+    // Coil
+    implementation Dependencies.coil
+
     // Testing
     testImplementation Dependencies.jUnit
     testImplementation Dependencies.mockito

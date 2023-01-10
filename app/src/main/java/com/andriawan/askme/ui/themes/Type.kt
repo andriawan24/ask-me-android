@@ -1,6 +1,7 @@
 package com.andriawan.askme.ui.themes
 
 import androidx.compose.material.Typography
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -56,6 +57,12 @@ val AskMeTypography = Typography(
     body2 = TextStyle(
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
+        fontFamily = PoppinsFontFamily
+    ),
+    caption = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        color = Color.Gray,
         fontFamily = PoppinsFontFamily
     )
 )

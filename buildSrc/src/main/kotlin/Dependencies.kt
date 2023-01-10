@@ -11,6 +11,7 @@ object Versions {
     const val hiltVersion = "2.44.2"
     const val shimmerVersion = "0.5.0"
     const val timberVersion = "5.0.1"
+    const val coilVersion = "2.2.2"
 
     // Testing
     const val jUnitVersion = "4.13.2"
@@ -59,6 +60,9 @@ object Dependencies {
 
     // Timber for logging
     const val timber = "com.jakewharton.timber:timber:${Versions.timberVersion}"
+
+    // Coil
+    const val coil = "io.coil-kt:coil-compose:${Versions.coilVersion}"
 
     // Testing
     const val jUnit = "junit:junit:${Versions.jUnitVersion}"

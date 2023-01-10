@@ -12,6 +12,7 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.andriawan.askme.navigation.AskMeNavigation
+import com.andriawan.askme.ui.components.AskMeBottomNavigation
 import com.andriawan.askme.ui.themes.AskMeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,7 +28,9 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     content = {
                         Surface(
-                            modifier = Modifier.fillMaxSize().padding(it),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(it),
                             color = MaterialTheme.colors.background
                         ) {
                             AskMeNavigation(
@@ -36,7 +39,10 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     },
-                    scaffoldState = scaffoldState
+                    scaffoldState = scaffoldState,
+                    bottomBar = {
+                        AskMeBottomNavigation()
+                    }
                 )
             }
         }

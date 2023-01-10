@@ -9,4 +9,5 @@ interface AuthRepository {
     suspend fun getCredentials(): UserModel?
     suspend fun signUp(registerBody: RegisterBodyModel): UserModel?
     suspend fun saveCredentials(userModel: UserModel?)
+    suspend fun getUser(): UserModel?
 }

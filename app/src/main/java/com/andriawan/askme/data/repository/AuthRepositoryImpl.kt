@@ -35,4 +35,8 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun saveCredentials(userModel: UserModel?) {
         dataStore.saveUser(userModel)
     }
+
+    override suspend fun getUser(): UserModel? {
+        return dataStore.getUser()
+    }
 }
