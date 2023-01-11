@@ -1,30 +1,30 @@
 package com.andriawan.askme.ui.screens.splash.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.andriawan.askme.domain.usecases.auth.GetCredentialUseCase
 import com.andriawan.askme.domain.usecases.onboarding.GetFirstTimeUseCase
+import com.andriawan.askme.navigation.Routes
 import com.andriawan.askme.utils.None
 import com.andriawan.askme.utils.ResultState
-import com.andriawan.askme.utils.SingleEvents
 import com.andriawan.askme.utils.extensions.orFalse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SplashScreenViewModel @Inject constructor(
-    private val getFirstTimeUseCase: GetFirstTimeUseCase
+    private val getFirstTimeUseCase: GetFirstTimeUseCase,
+    private val getCredentialUseCase: GetCredentialUseCase
 ) : ViewModel() {
 
-    private val _navigateOnBoarding = MutableLiveData<SingleEvents<None>>()
-    val navigateOnBoarding: LiveData<SingleEvents<None>> = _navigateOnBoarding
-
-    private val _navigateLoginPage = MutableLiveData<SingleEvents<None>>()
-    val navigateLoginPage: LiveData<SingleEvents<None>> = _navigateLoginPage
+    private val _navigate = MutableSharedFlow<String>()
+    val navigate = _navigate.asSharedFlow()
 
     init {
         viewModelScope.launch {
@@ -32,14 +32,26 @@ class SplashScreenViewModel @Inject constructor(
             when (val firstTimeResponse = getFirstTimeUseCase.execute(None).first()) {
                 is ResultState.Success -> {
                     if (firstTimeResponse.data.orFalse()) {
-                        _navigateOnBoarding.value = SingleEvents(None)
+                        _navigate.emit(Routes.ON_BOARDING_PAGE)
                     } else {
-                        _navigateLoginPage.value = SingleEvents(None)
+                        getCredentialUseCase.execute(None).collectLatest {
+                            when (it) {
+                                is ResultState.Success -> {
+                                    _navigate.emit(Routes.HOME_PAGE)
+                                }
+                                is ResultState.Error -> {
+                                    _navigate.emit(Routes.LOGIN_PAGE)
+                                }
+                                else -> {
+                                    // No-ops
+                                }
+                            }
+                        }
                     }
                 }
 
                 else -> {
-                    _navigateOnBoarding.value = SingleEvents(None)
+                    _navigate.emit(Routes.ON_BOARDING_PAGE)
                 }
             }
         }

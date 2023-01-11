@@ -15,11 +15,11 @@ data class TopicDTO(
     val imageURL: String? = null
 )
 
-fun TopicDTO.toModel(): TopicModel = TopicModel(
-    id = this.id.orZero(),
-    name = this.name.orEmpty(),
-    description = this.description.orEmpty(),
-    imageURL = this.imageURL.orEmpty()
+fun TopicDTO?.toModel(): TopicModel = TopicModel(
+    id = this?.id.orZero(),
+    name = this?.name.orEmpty(),
+    description = this?.description.orEmpty(),
+    imageURL = this?.imageURL.orEmpty()
 )
 
-fun List<TopicDTO>.toModels(): List<TopicModel> = this.map { it.toModel() }
+fun List<TopicDTO>.toModels(): List<TopicModel> = map { it.toModel() }

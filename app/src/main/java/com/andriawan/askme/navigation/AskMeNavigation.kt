@@ -14,6 +14,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navOptions
+import com.andriawan.askme.ui.screens.home.presenter.HomeScreen
+import com.andriawan.askme.ui.screens.home.viewmodel.HomeViewModel
 import com.andriawan.askme.ui.screens.login.models.LoginUiEvent
 import com.andriawan.askme.ui.screens.login.presenter.LoginScreen
 import com.andriawan.askme.ui.screens.login.viewmodel.LoginViewModel
@@ -24,6 +27,7 @@ import com.andriawan.askme.ui.screens.register.presenter.RegisterScreen
 import com.andriawan.askme.ui.screens.register.viewmodel.RegisterViewModel
 import com.andriawan.askme.ui.screens.splash.presenter.SplashScreen
 import com.andriawan.askme.ui.screens.splash.viewmodel.SplashScreenViewModel
+import com.andriawan.askme.utils.extensions.handleNavigation
 import com.andriawan.askme.utils.extensions.handleNavigationWithSingleEvent
 import com.andriawan.askme.utils.network.getError
 import kotlinx.coroutines.flow.collectLatest
@@ -43,22 +47,20 @@ fun AskMeNavigation(
     ) {
         composable(Routes.SPLASH_SCREEN_PAGE) {
             val viewModel: SplashScreenViewModel = hiltViewModel()
-            viewModel.navigateLoginPage.observe(lifecycleOwner) {
-                navController.handleNavigationWithSingleEvent(
-                    event = it,
-                    destination = Routes.LOGIN_PAGE,
-                    popUpToRoute = Routes.SPLASH_SCREEN_PAGE,
-                    inclusive = true
-                )
+            LaunchedEffect(true) {
+                lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    launch {
+                        viewModel.navigate.collectLatest {
+                            navController.handleNavigation(
+                                destination = it,
+                                popUpToRoute = Routes.SPLASH_SCREEN_PAGE,
+                                inclusive = true
+                            )
+                        }
+                    }
+                }
             }
-            viewModel.navigateOnBoarding.observe(lifecycleOwner) {
-                navController.handleNavigationWithSingleEvent(
-                    event = it,
-                    destination = Routes.ON_BOARDING_PAGE,
-                    popUpToRoute = Routes.SPLASH_SCREEN_PAGE,
-                    inclusive = true
-                )
-            }
+
             SplashScreen()
         }
         composable(Routes.ON_BOARDING_PAGE) {
@@ -127,6 +129,34 @@ fun AskMeNavigation(
                 viewModel = viewModel,
                 navController = navController
             )
+        }
+        composable(Routes.HOME_PAGE) {
+            val viewModel: HomeViewModel = hiltViewModel()
+            LaunchedEffect(true) {
+                lifecycleOwner.lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+                    launch {
+                        viewModel.showErrorMessage.collectLatest {
+                            snackBarHostState.showSnackbar(
+                                message = it.getError(context),
+                                duration = SnackbarDuration.Short
+                            )
+                        }
+                    }
+                    launch {
+                        viewModel.navigateToLogin.collectLatest {
+                            navController.navigate(
+                                route = Routes.LOGIN_PAGE,
+                                navOptions = navOptions {
+                                    popUpTo(Routes.LOGIN_PAGE) {
+                                        inclusive = true
+                                    }
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+            HomeScreen(state = viewModel.uiState)
         }
     }
 }

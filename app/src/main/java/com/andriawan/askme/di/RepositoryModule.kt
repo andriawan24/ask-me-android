@@ -2,9 +2,11 @@ package com.andriawan.askme.di
 
 import com.andriawan.askme.data.repository.AuthRepositoryImpl
 import com.andriawan.askme.data.repository.OnBoardingRepositoryImpl
+import com.andriawan.askme.data.repository.QuestionRepositoryImpl
 import com.andriawan.askme.data.repository.TopicRepositoryImpl
 import com.andriawan.askme.domain.repository.AuthRepository
 import com.andriawan.askme.domain.repository.OnBoardingRepository
+import com.andriawan.askme.domain.repository.QuestionRepository
 import com.andriawan.askme.domain.repository.TopicRepository
 import dagger.Binds
 import dagger.Module
@@ -27,4 +29,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsTopicRepository(impl: TopicRepositoryImpl): TopicRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsQuestionRepository(impl: QuestionRepositoryImpl): QuestionRepository
 }

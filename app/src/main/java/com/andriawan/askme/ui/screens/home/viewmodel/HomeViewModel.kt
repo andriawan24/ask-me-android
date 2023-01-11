@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andriawan.askme.domain.usecases.auth.GetCredentialUseCase
+import com.andriawan.askme.domain.usecases.auth.GetUserUseCase
 import com.andriawan.askme.domain.usecases.auth.SignOutUseCase
 import com.andriawan.askme.domain.usecases.topic.GetTopicUseCase
 import com.andriawan.askme.ui.screens.home.models.HomeUiState
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getCredentialUseCase: GetCredentialUseCase,
+    private val getUserUseCase: GetUserUseCase,
     private val getTopicUseCase: GetTopicUseCase,
     private val signOutUseCase: SignOutUseCase
 ) : ViewModel() {
@@ -36,7 +36,7 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getCredentialUseCase.execute(None).collectLatest {
+            getUserUseCase.execute(None).collectLatest {
                 uiState = when (it) {
                     is ResultState.Loading -> uiState.copy(loadingUserModel = true)
                     is ResultState.Success -> uiState.copy(loadingUserModel = false, user = it.data)

@@ -1,7 +1,9 @@
 package com.andriawan.askme.ui.screens.home.presenter
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,6 +13,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,12 +35,15 @@ import com.andriawan.askme.utils.Constants.EMPTY
 import com.andriawan.askme.utils.extensions.getFirstWord
 import com.andriawan.askme.utils.extensions.orZero
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     state: HomeUiState,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier = modifier.fillMaxSize()) {
+    LazyColumn(
+        modifier = modifier.fillMaxSize()
+    ) {
         item {
             Row(
                 modifier = Modifier
@@ -84,26 +90,31 @@ fun HomeScreen(
         }
 
         item {
-            LazyRow(contentPadding = PaddingValues(horizontal = 12.dp)) {
-                items(
-                    items = state.topics.orEmpty(),
-                    key = { it.id }
-                ) { topic ->
-                    Card(
-                        modifier = Modifier.padding(vertical = 14.dp, horizontal = 12.dp),
-                        backgroundColor = Color(0xFFABD9FF),
-                        shape = RoundedCornerShape(6.dp)
-                    ) {
-                        Column(modifier = Modifier.padding(horizontal = 48.dp, vertical = 12.dp)) {
-                            Image(
-                                painter = painterResource(id = R.drawable.img_laptop),
-                                contentDescription = "Image ${topic.name}",
-                                modifier = Modifier.size(48.dp)
-                            )
-                            Text(
-                                text = topic.name,
-                                style = MaterialTheme.typography.h6
-                            )
+            CompositionLocalProvider(LocalOverscrollConfiguration provides null) {
+                LazyRow(contentPadding = PaddingValues(horizontal = 12.dp)) {
+                    items(
+                        items = state.topics.orEmpty(),
+                        key = { it.id }
+                    ) { topic ->
+                        Card(
+                            modifier = Modifier.padding(vertical = 14.dp, horizontal = 12.dp),
+                            backgroundColor = Color(0xFFABD9FF),
+                            shape = RoundedCornerShape(6.dp)
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(horizontal = 48.dp, vertical = 12.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.img_laptop),
+                                    contentDescription = "Image ${topic.name}",
+                                    modifier = Modifier.size(48.dp)
+                                )
+                                Text(
+                                    text = topic.name,
+                                    style = MaterialTheme.typography.h6
+                                )
+                            }
                         }
                     }
                 }
@@ -126,7 +137,8 @@ fun HomeScreen(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 12.dp),
+                    .padding(horizontal = 24.dp)
+                    .padding(top = 12.dp),
                 backgroundColor = if (isSystemInDarkTheme()) Color.DarkGray else Color.White,
                 shape = RoundedCornerShape(8.dp)
             ) {
@@ -161,7 +173,7 @@ fun HomeScreen(
             Text(
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
-                    .padding(top = 12.dp),
+                    .padding(top = 24.dp),
                 text = stringResource(R.string.home_most_stars_title),
                 style = MaterialTheme.typography.h6.copy(
                     fontWeight = FontWeight.SemiBold
@@ -173,7 +185,8 @@ fun HomeScreen(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 12.dp),
+                    .padding(horizontal = 24.dp)
+                    .padding(top = 12.dp),
                 backgroundColor = Color.Transparent,
                 elevation = 0.dp
             ) {
@@ -214,6 +227,8 @@ fun HomeScreen(
                 }
             }
         }
+
+        item { Spacer(modifier = Modifier.height(24.dp)) }
     }
 }
 

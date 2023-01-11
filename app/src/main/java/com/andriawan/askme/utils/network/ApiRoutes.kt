@@ -8,4 +8,5 @@ object ApiRoutes {
     const val SIGN_UP_SERVICE = "/v1/api/auth/sign-up"
     const val GET_CREDENTIAL_SERVICE = "/v1/api/auth/me"
     const val GET_TOPICS = "/v1/api/topics"
+    const val GET_QUESTIONS = "/v1/api/questions"
 }

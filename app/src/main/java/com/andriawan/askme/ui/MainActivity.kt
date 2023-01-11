@@ -9,7 +9,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.andriawan.askme.navigation.AskMeNavigation
 import com.andriawan.askme.ui.components.AskMeBottomNavigation
@@ -25,6 +27,7 @@ class MainActivity : ComponentActivity() {
             AskMeTheme {
                 val navController = rememberNavController()
                 val scaffoldState = rememberScaffoldState()
+                val currentBackstack by navController.currentBackStackEntryAsState()
                 Scaffold(
                     content = {
                         Surface(
@@ -41,7 +44,9 @@ class MainActivity : ComponentActivity() {
                     },
                     scaffoldState = scaffoldState,
                     bottomBar = {
-                        AskMeBottomNavigation()
+                        AskMeBottomNavigation(
+                            currentRoutes = currentBackstack?.destination?.route.orEmpty()
+                        )
                     }
                 )
             }

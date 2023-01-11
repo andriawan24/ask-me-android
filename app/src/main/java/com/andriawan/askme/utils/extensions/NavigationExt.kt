@@ -21,3 +21,17 @@ fun NavHostController.handleNavigationWithSingleEvent(
         }
     }
 }
+
+fun NavHostController.handleNavigation(
+    destination: String,
+    popUpToRoute: String = Constants.EMPTY,
+    inclusive: Boolean = false,
+    launchSingleTop: Boolean = false
+) {
+    this.navigate(destination) {
+        this.launchSingleTop = launchSingleTop
+        popUpTo(popUpToRoute) {
+            this.inclusive = inclusive
+        }
+    }
+}
