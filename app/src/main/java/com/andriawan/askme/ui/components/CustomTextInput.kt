@@ -29,12 +29,12 @@ import com.andriawan.askme.utils.Constants.MINUS_ONE
 @Composable
 fun CustomTextInput(
     modifier: Modifier = Modifier,
-    label: String,
+    label: String? = null,
     labelColor: Color = MaterialTheme.colors.onBackground,
     hint: String,
     value: String,
     onValueChanged: (String) -> Unit,
-    leadingIcon: Painter,
+    leadingIcon: Painter? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -45,51 +45,87 @@ fun CustomTextInput(
     singleLine: Boolean = true
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
-            color = labelColor
-        )
+        if (label != null) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
+                color = labelColor
+            )
+        }
         Spacer(modifier = Modifier.height(10.dp))
-        TextField(
-            value = value,
-            onValueChange = onValueChanged,
-            modifier = Modifier.fillMaxWidth(),
-            placeholder = {
-                Text(
-                    text = hint,
-                    style = MaterialTheme.typography.body1,
-                    color = HintTextInputColor,
-                    modifier = Modifier.wrapContentHeight(Alignment.CenterVertically)
-                )
-            },
-            leadingIcon = {
-                Icon(
-                    painter = leadingIcon,
-                    contentDescription = "$label icon",
-                    modifier = Modifier.size(24.dp),
-                    tint = HintTextInputColor
-                )
-            },
-            trailingIcon = trailingIcon,
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.White,
-                focusedIndicatorColor = Color.Unspecified,
-                unfocusedIndicatorColor = Color.Unspecified
-            ),
-            shape = MaterialTheme.shapes.small,
-            textStyle = MaterialTheme.typography.body1.copy(
-                color = OnBackgroundColorLight
-            ),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = keyboardType,
-                imeAction = imeAction
-            ),
-            keyboardActions = keyboardActions,
-            visualTransformation = visualTransformation,
-            isError = isError,
-            singleLine = singleLine
-        )
+        if (leadingIcon != null) {
+            TextField(
+                value = value,
+                onValueChange = onValueChanged,
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = {
+                    Text(
+                        text = hint,
+                        style = MaterialTheme.typography.body1,
+                        color = HintTextInputColor,
+                        modifier = Modifier.wrapContentHeight(Alignment.CenterVertically)
+                    )
+                },
+                leadingIcon = {
+                    Icon(
+                        painter = leadingIcon,
+                        contentDescription = "$label icon",
+                        modifier = Modifier.size(24.dp),
+                        tint = HintTextInputColor
+                    )
+                },
+                trailingIcon = trailingIcon,
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.White,
+                    focusedIndicatorColor = Color.Unspecified,
+                    unfocusedIndicatorColor = Color.Unspecified
+                ),
+                shape = MaterialTheme.shapes.small,
+                textStyle = MaterialTheme.typography.body1.copy(
+                    color = OnBackgroundColorLight
+                ),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = keyboardType,
+                    imeAction = imeAction
+                ),
+                keyboardActions = keyboardActions,
+                visualTransformation = visualTransformation,
+                isError = isError,
+                singleLine = singleLine
+            )
+        } else {
+            TextField(
+                value = value,
+                onValueChange = onValueChanged,
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = {
+                    Text(
+                        text = hint,
+                        style = MaterialTheme.typography.body1,
+                        color = HintTextInputColor,
+                        modifier = Modifier.wrapContentHeight(Alignment.CenterVertically)
+                    )
+                },
+                trailingIcon = trailingIcon,
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.White,
+                    focusedIndicatorColor = Color.Unspecified,
+                    unfocusedIndicatorColor = Color.Unspecified
+                ),
+                shape = MaterialTheme.shapes.small,
+                textStyle = MaterialTheme.typography.body1.copy(
+                    color = OnBackgroundColorLight
+                ),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = keyboardType,
+                    imeAction = imeAction
+                ),
+                keyboardActions = keyboardActions,
+                visualTransformation = visualTransformation,
+                isError = isError,
+                singleLine = singleLine
+            )
+        }
 
         if (errorText != MINUS_ONE) {
             Text(
@@ -119,6 +155,27 @@ fun CustomTextInputPreviewLight() {
                 value = "",
                 onValueChanged = { },
                 leadingIcon = painterResource(id = R.drawable.ic_email)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Preview(uiMode = UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+fun CustomTextInputNoIconPreviewLight() {
+    AskMeTheme {
+        Surface(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .padding(24.dp)
+        ) {
+            CustomTextInput(
+                modifier = Modifier.background(MaterialTheme.colors.background),
+                label = "Email",
+                hint = "Enter your email",
+                value = "",
+                onValueChanged = { }
             )
         }
     }
