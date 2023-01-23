@@ -1,5 +1,6 @@
 package com.andriawan.askme.ui.screens.register.presenter
 
+import android.content.Context
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,9 +11,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,31 +28,53 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
-import androidx.navigation.NavController
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavHostController
 import com.andriawan.askme.R
+import com.andriawan.askme.navigation.Routes
 import com.andriawan.askme.ui.components.CustomButton
 import com.andriawan.askme.ui.components.CustomSpannableLinkText
 import com.andriawan.askme.ui.components.CustomTextInput
-import com.andriawan.askme.ui.components.LifecycleComposable
 import com.andriawan.askme.ui.screens.register.models.RegisterUiEvent
 import com.andriawan.askme.ui.screens.register.viewmodel.RegisterViewModel
 import com.andriawan.askme.ui.themes.AskMeTheme
 import com.andriawan.askme.ui.themes.HintTextInputColor
 import com.andriawan.askme.utils.Constants
+import com.andriawan.askme.utils.extensions.handleNavigation
 import com.andriawan.askme.utils.extensions.orDefault
-import timber.log.Timber
+import com.andriawan.askme.utils.network.getError
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterScreen(
     viewModel: RegisterViewModel,
-    navController: NavController
+    navController: NavHostController,
+    snackBarHostState: SnackbarHostState,
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+    context: Context = LocalContext.current
 ) {
     val state = viewModel.state
 
-    LifecycleComposable { owner, event ->
-        if (event == Lifecycle.Event.ON_START) {
-            viewModel.signUpResponse.observe(owner) {
-                Timber.d("Result is $it")
+    LaunchedEffect(true) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            launch {
+                viewModel.showErrorMessage.collectLatest {
+                    snackBarHostState.showSnackbar(
+                        message = it.getError(context),
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+            launch {
+                viewModel.navigateToLogin.collectLatest {
+                    navController.handleNavigation(
+                        destination = Routes.LOGIN_PAGE,
+                        popUpToRoute = Routes.LOGIN_PAGE,
+                        inclusive = true
+                    )
+                }
             }
         }
     }

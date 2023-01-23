@@ -127,7 +127,8 @@ fun AskMeNavigation(
             val viewModel: RegisterViewModel = hiltViewModel()
             RegisterScreen(
                 viewModel = viewModel,
-                navController = navController
+                navController = navController,
+                snackBarHostState = snackBarHostState
             )
         }
         composable(Routes.HOME_PAGE) {

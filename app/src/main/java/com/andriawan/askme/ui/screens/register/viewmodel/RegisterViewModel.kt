@@ -14,8 +14,11 @@ import com.andriawan.askme.domain.usecases.auth.SignUpUseCase
 import com.andriawan.askme.ui.screens.register.models.RegisterUiEvent
 import com.andriawan.askme.ui.screens.register.models.RegisterUiState
 import com.andriawan.askme.utils.Constants
+import com.andriawan.askme.utils.None
 import com.andriawan.askme.utils.ResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.regex.Pattern
@@ -32,14 +35,32 @@ class RegisterViewModel @Inject constructor(
     private val _signUpResponse = MutableLiveData<ResultState<UserModel?>>()
     val signUpResponse: LiveData<ResultState<UserModel?>> = _signUpResponse
 
-    fun signUp(name: String, email: String, password: String) {
+    private val _showErrorMessage = MutableSharedFlow<Exception>()
+    val showErrorMessage = _showErrorMessage.asSharedFlow()
+
+    private val _navigateToLogin = MutableSharedFlow<None>()
+    val navigateToLogin = _navigateToLogin.asSharedFlow()
+
+    private fun signUp(name: String, email: String, password: String) {
         val param = SignUpUseCase.Param(
             name = name,
             email = email,
             password = password
         )
         viewModelScope.launch {
-            signUpUseCase.execute(param).collectLatest { _signUpResponse.value = it }
+            signUpUseCase.execute(param).collectLatest {
+                when (it) {
+                    is ResultState.Error -> {
+                        _showErrorMessage.emit(it.exception)
+                    }
+                    is ResultState.Loading -> {
+                        // Do nothing
+                    }
+                    is ResultState.Success -> {
+                        _navigateToLogin.emit(None)
+                    }
+                }
+            }
         }
     }
 

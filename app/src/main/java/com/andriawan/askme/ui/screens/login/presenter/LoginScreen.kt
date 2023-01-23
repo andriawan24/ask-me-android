@@ -3,6 +3,7 @@ package com.andriawan.askme.ui.screens.login.presenter
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -11,6 +12,7 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -45,100 +47,180 @@ fun LoginScreen(
     @StringRes passwordError: Int,
     signInButtonEnabled: Boolean
 ) {
-    val focusManager = LocalFocusManager.current
-    Column(modifier = Modifier.fillMaxSize()) {
-        LoginTitleText(
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .padding(top = 24.dp)
-        )
-        Spacer(modifier = Modifier.height(30.dp))
-        CustomTextInput(
-            modifier = Modifier.padding(horizontal = 24.dp),
-            label = stringResource(id = R.string.input_email_label_text),
-            hint = stringResource(id = R.string.input_email_hint_text),
-            value = email,
-            onValueChanged = onEmailChanged,
-            leadingIcon = painterResource(id = R.drawable.ic_email),
-            keyboardType = KeyboardType.Email,
-            keyboardActions = KeyboardActions(
-                onNext = {
-                    focusManager.moveFocus(FocusDirection.Down)
-                }
-            ),
-            imeAction = ImeAction.Next,
-            isError = emailError != MINUS_ONE,
-            errorText = emailError.orDefault(MINUS_ONE)
-        )
-        Spacer(modifier = Modifier.height(30.dp))
-        CustomTextInput(
-            modifier = Modifier.padding(horizontal = 24.dp),
-            label = stringResource(id = R.string.input_password_label_text),
-            hint = stringResource(id = R.string.input_password_hint_text),
-            value = password,
-            onValueChanged = onPasswordChanged,
-            leadingIcon = painterResource(id = R.drawable.ic_password),
-            trailingIcon = {
-                val iconType =
-                    if (isPasswordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
-                val contentDescription = if (isPasswordVisible) "Hide Password" else "Show Password"
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        item {
+            LoginTitleText(
+                modifier = Modifier
+                    .padding(horizontal = 24.dp)
+                    .padding(top = 24.dp)
+            )
+        }
 
-                IconButton(
-                    onClick = {
-                        onPasswordVisibilityChanged.invoke(!isPasswordVisible)
-                    }
-                ) {
-                    Icon(
-                        iconType,
-                        contentDescription = contentDescription,
-                        tint = HintTextInputColor
-                    )
-                }
-            },
-            imeAction = ImeAction.Done,
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    focusManager.clearFocus(true)
-                }
-            ),
-            keyboardType = KeyboardType.Password,
-            visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            isError = passwordError != MINUS_ONE,
-            errorText = passwordError.orDefault(MINUS_ONE)
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        Text(
-            text = stringResource(id = R.string.forgot_password_text),
-            style = MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Medium),
-            textAlign = TextAlign.End,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-        )
-        Spacer(modifier = Modifier.weight(1F))
-        CustomButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp),
-            title = stringResource(id = R.string.sign_in_button_text),
-            onButtonClicked = onSubmitClicked,
-            enabled = signInButtonEnabled
-        )
-        Spacer(modifier = Modifier.height(30.dp))
-        CustomSpannableLinkText(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-                .padding(bottom = 24.dp),
-            fullText = stringResource(id = R.string.do_not_have_account_text),
-            linkText = stringResource(id = R.string.sign_up_button_text),
-            textAlign = TextAlign.Center,
-            textStyle = MaterialTheme.typography.body2.copy(
-                fontWeight = FontWeight.Medium
-            ),
-            onLinkTextClicked = onRegisterButtonClicked
-        )
+        item {
+            Spacer(modifier = Modifier.height(30.dp))
+        }
+
+        item {
+            InputEmail(
+                email = email,
+                onEmailChanged = onEmailChanged,
+                emailError = emailError
+            )
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(30.dp))
+        }
+
+        item {
+            InputPassword(
+                password = password,
+                onPasswordChanged = onPasswordChanged,
+                isPasswordVisible = isPasswordVisible,
+                onPasswordVisibilityChanged = onPasswordVisibilityChanged,
+                passwordError = passwordError
+            )
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(10.dp))
+        }
+
+        item {
+            Text(
+                text = stringResource(id = R.string.forgot_password_text),
+                style = MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Medium),
+                textAlign = TextAlign.End,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+            )
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(56.dp))
+        }
+
+        item {
+            SignInButton(
+                onSubmitClicked = onSubmitClicked,
+                signInButtonEnabled = signInButtonEnabled
+            )
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(30.dp))
+        }
+
+        item {
+            SignUpLinkText(onRegisterButtonClicked = onRegisterButtonClicked)
+        }
     }
+}
+
+@Composable
+fun SignUpLinkText(onRegisterButtonClicked: () -> Unit) {
+    CustomSpannableLinkText(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp)
+            .padding(bottom = 24.dp),
+        fullText = stringResource(id = R.string.do_not_have_account_text),
+        linkText = stringResource(id = R.string.sign_up_button_text),
+        textAlign = TextAlign.Center,
+        textStyle = MaterialTheme.typography.body2.copy(
+            fontWeight = FontWeight.Medium
+        ),
+        onLinkTextClicked = onRegisterButtonClicked
+    )
+}
+
+@Composable
+fun SignInButton(
+    onSubmitClicked: () -> Unit,
+    signInButtonEnabled: Boolean,
+    modifier: Modifier = Modifier
+) {
+    CustomButton(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
+        title = stringResource(id = R.string.sign_in_button_text),
+        onButtonClicked = onSubmitClicked,
+        enabled = signInButtonEnabled
+    )
+}
+
+@Composable
+fun InputPassword(
+    password: String,
+    onPasswordChanged: (String) -> Unit,
+    isPasswordVisible: Boolean,
+    onPasswordVisibilityChanged: (Boolean) -> Unit,
+    @StringRes passwordError: Int,
+    focusManager: FocusManager = LocalFocusManager.current
+) {
+    CustomTextInput(
+        modifier = Modifier.padding(horizontal = 24.dp),
+        label = stringResource(id = R.string.input_password_label_text),
+        hint = stringResource(id = R.string.input_password_hint_text),
+        value = password,
+        onValueChanged = onPasswordChanged,
+        leadingIcon = painterResource(id = R.drawable.ic_password),
+        trailingIcon = {
+            val iconType =
+                if (isPasswordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+            val contentDescription = if (isPasswordVisible) "Hide Password" else "Show Password"
+
+            IconButton(
+                onClick = {
+                    onPasswordVisibilityChanged.invoke(!isPasswordVisible)
+                }
+            ) {
+                Icon(
+                    iconType,
+                    contentDescription = contentDescription,
+                    tint = HintTextInputColor
+                )
+            }
+        },
+        imeAction = ImeAction.Done,
+        keyboardActions = KeyboardActions(
+            onDone = {
+                focusManager.clearFocus(true)
+            }
+        ),
+        keyboardType = KeyboardType.Password,
+        visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        isError = passwordError != MINUS_ONE,
+        errorText = passwordError.orDefault(MINUS_ONE)
+    )
+}
+
+@Composable
+fun InputEmail(
+    email: String,
+    onEmailChanged: (String) -> Unit,
+    focusManager: FocusManager = LocalFocusManager.current,
+    @StringRes emailError: Int
+) {
+    CustomTextInput(
+        modifier = Modifier.padding(horizontal = 24.dp),
+        label = stringResource(id = R.string.input_email_label_text),
+        hint = stringResource(id = R.string.input_email_hint_text),
+        value = email,
+        onValueChanged = onEmailChanged,
+        leadingIcon = painterResource(id = R.drawable.ic_email),
+        keyboardType = KeyboardType.Email,
+        keyboardActions = KeyboardActions(
+            onNext = {
+                focusManager.moveFocus(FocusDirection.Down)
+            }
+        ),
+        imeAction = ImeAction.Next,
+        isError = emailError != MINUS_ONE,
+        errorText = emailError.orDefault(MINUS_ONE)
+    )
 }
 
 @Composable
