@@ -45,7 +45,8 @@ class MainActivity : ComponentActivity() {
                     scaffoldState = scaffoldState,
                     bottomBar = {
                         AskMeBottomNavigation(
-                            currentRoutes = currentBackstack?.destination?.route.orEmpty()
+                            currentRoutes = currentBackstack?.destination?.route.orEmpty(),
+                            navController = navController
                         )
                     }
                 )

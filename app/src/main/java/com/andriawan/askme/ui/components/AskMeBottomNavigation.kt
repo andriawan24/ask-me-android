@@ -13,17 +13,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.andriawan.askme.R
 import com.andriawan.askme.navigation.Routes
 import com.andriawan.askme.ui.themes.AskMeTheme
+import com.andriawan.askme.utils.extensions.handleNavigation
 
 @Composable
 fun AskMeBottomNavigation(
     currentRoutes: String,
+    navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
     val bottomNavigationVisibleRoutes = listOf(
-        Routes.HOME_PAGE
+        Routes.HOME_PAGE,
+        Routes.QUESTION_PAGE
     )
 
     if (currentRoutes in bottomNavigationVisibleRoutes) {
@@ -34,7 +39,13 @@ fun AskMeBottomNavigation(
         ) {
             BottomNavigationItem(
                 selected = currentRoutes == Routes.HOME_PAGE,
-                onClick = { /*TODO*/ },
+                onClick = {
+                    navController.handleNavigation(
+                        Routes.HOME_PAGE,
+                        popUpToRoute = Routes.HOME_PAGE,
+                        inclusive = true
+                    )
+                },
                 icon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_home),
@@ -55,10 +66,15 @@ fun AskMeBottomNavigation(
                     )
                 },
             )
-
             BottomNavigationItem(
-                selected = false,
-                onClick = { /*TODO*/ },
+                selected = currentRoutes == Routes.QUESTION_PAGE,
+                onClick = {
+                    navController.handleNavigation(
+                        Routes.QUESTION_PAGE,
+                        popUpToRoute = Routes.QUESTION_PAGE,
+                        inclusive = true
+                    )
+                },
                 icon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_questions),
@@ -70,10 +86,15 @@ fun AskMeBottomNavigation(
                 unselectedContentColor = MaterialTheme.colors.onBackground,
                 alwaysShowLabel = false,
                 label = {
-                    Text(text = "Question")
+                    Text(
+                        text = "Question",
+                        style = MaterialTheme.typography.caption.copy(
+                            color = MaterialTheme.colors.primary,
+                            fontSize = 12.sp
+                        )
+                    )
                 }
             )
-
             BottomNavigationItem(
                 selected = false,
                 onClick = { /*TODO*/ },
@@ -91,7 +112,6 @@ fun AskMeBottomNavigation(
                     Text(text = "My Questions")
                 }
             )
-
             BottomNavigationItem(
                 selected = false,
                 onClick = { /*TODO*/ },
@@ -119,7 +139,8 @@ fun AskMeBottomNavigation(
 fun AskMeBottomNavigationPreview() {
     AskMeTheme {
         AskMeBottomNavigation(
-            currentRoutes = Routes.HOME_PAGE
+            currentRoutes = Routes.HOME_PAGE,
+            navController = rememberNavController()
         )
     }
 }

@@ -23,6 +23,7 @@ import com.andriawan.askme.ui.screens.login.viewmodel.LoginViewModel
 import com.andriawan.askme.ui.screens.onboarding.models.OnBoardingUiEvent
 import com.andriawan.askme.ui.screens.onboarding.presenter.OnBoardingScreen
 import com.andriawan.askme.ui.screens.onboarding.viewmodel.OnBoardingViewModel
+import com.andriawan.askme.ui.screens.questions.presenter.QuestionScreen
 import com.andriawan.askme.ui.screens.register.presenter.RegisterScreen
 import com.andriawan.askme.ui.screens.register.viewmodel.RegisterViewModel
 import com.andriawan.askme.ui.screens.splash.presenter.SplashScreen
@@ -158,6 +159,9 @@ fun AskMeNavigation(
                 }
             }
             HomeScreen(state = viewModel.uiState)
+        }
+        composable(Routes.QUESTION_PAGE) {
+            QuestionScreen()
         }
     }
 }

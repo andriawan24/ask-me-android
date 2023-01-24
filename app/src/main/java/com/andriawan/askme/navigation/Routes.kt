@@ -6,4 +6,5 @@ object Routes {
     const val LOGIN_PAGE = "login_page"
     const val REGISTER_PAGE = "register_page"
     const val HOME_PAGE = "home_page"
+    const val QUESTION_PAGE = "question_page"
 }
