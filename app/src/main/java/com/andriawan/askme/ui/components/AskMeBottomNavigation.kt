@@ -34,8 +34,7 @@ fun AskMeBottomNavigation(
     if (currentRoutes in bottomNavigationVisibleRoutes) {
         BottomNavigation(
             backgroundColor = if (!isSystemInDarkTheme()) Color.White else MaterialTheme.colors.background,
-            modifier = modifier
-                .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+            modifier = modifier.clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
         ) {
             BottomNavigationItem(
                 selected = currentRoutes == Routes.HOME_PAGE,
