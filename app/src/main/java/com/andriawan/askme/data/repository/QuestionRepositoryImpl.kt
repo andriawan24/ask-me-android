@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class QuestionRepositoryImpl @Inject constructor(private val api: AskMeAPI) : QuestionRepository {
 
-    override suspend fun getQuestions(): List<QuestionModel> {
-        return api.getQuestions().data?.map { it.toModel() }.orEmpty()
+    override suspend fun getQuestions(query: String): List<QuestionModel> {
+        return api.getQuestions(query).data?.map { it.toModel() }.orEmpty()
     }
 }

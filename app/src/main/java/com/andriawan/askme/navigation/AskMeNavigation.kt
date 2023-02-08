@@ -24,6 +24,7 @@ import com.andriawan.askme.ui.screens.onboarding.models.OnBoardingUiEvent
 import com.andriawan.askme.ui.screens.onboarding.presenter.OnBoardingScreen
 import com.andriawan.askme.ui.screens.onboarding.viewmodel.OnBoardingViewModel
 import com.andriawan.askme.ui.screens.questions.presenter.QuestionScreen
+import com.andriawan.askme.ui.screens.questions.viewmodel.QuestionViewModel
 import com.andriawan.askme.ui.screens.register.presenter.RegisterScreen
 import com.andriawan.askme.ui.screens.register.viewmodel.RegisterViewModel
 import com.andriawan.askme.ui.screens.splash.presenter.SplashScreen
@@ -135,7 +136,7 @@ fun AskMeNavigation(
         composable(Routes.HOME_PAGE) {
             val viewModel: HomeViewModel = hiltViewModel()
             LaunchedEffect(true) {
-                lifecycleOwner.lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+                lifecycleOwner.lifecycle.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
                     launch {
                         viewModel.showErrorMessage.collectLatest {
                             snackBarHostState.showSnackbar(
@@ -161,7 +162,26 @@ fun AskMeNavigation(
             HomeScreen(state = viewModel.uiState)
         }
         composable(Routes.QUESTION_PAGE) {
-            QuestionScreen()
+            val viewModel = hiltViewModel<QuestionViewModel>()
+
+            LaunchedEffect(true) {
+                lifecycleOwner.lifecycle.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
+                    launch {
+                        viewModel.initData()
+                    }
+                    launch {
+                        viewModel.message.collectLatest {
+                            snackBarHostState.showSnackbar(message = it.getError(context))
+                        }
+                    }
+                }
+            }
+
+            QuestionScreen(
+                uiState = viewModel.uiState,
+                onQueryChanged = viewModel::updateQuery,
+                onSearchSubmitted = viewModel::initData
+            )
         }
     }
 }

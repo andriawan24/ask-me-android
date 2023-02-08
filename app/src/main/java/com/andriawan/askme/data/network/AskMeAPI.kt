@@ -10,6 +10,7 @@ import com.andriawan.askme.utils.network.BaseResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface AskMeAPI {
 
@@ -26,5 +27,7 @@ interface AskMeAPI {
     suspend fun getTopics(): BaseResponse<List<TopicDTO>>
 
     @GET(GET_QUESTIONS)
-    suspend fun getQuestions(): BaseResponse<List<QuestionDTO>>
+    suspend fun getQuestions(
+        @Query("q") query: String
+    ): BaseResponse<List<QuestionDTO>>
 }
